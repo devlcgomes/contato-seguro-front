@@ -1,9 +1,10 @@
-import { Text } from "@radix-ui/themes";
+import { Button, Text } from "@radix-ui/themes";
 import * as S from "./dashboard.styles";
 import { Sidebar } from "../../components/Sidebar";
 import { BookStats } from "../../components/BookStats";
 import { RecentBooks } from "../../components/RecentBooks";
 import { BookGenreChart } from "../../components/BookGenreChart";
+import { BookOpenUser } from "@phosphor-icons/react";
 
 export default function DashboardScreen() {
   return (
@@ -20,9 +21,12 @@ export default function DashboardScreen() {
         <S.ContentArea>
           <S.TopSection>
             <Text size="6" weight="bold">
-              My Books
+              Meus Livros
             </Text>
-            <button>+ Add New</button>
+            <Button size="3">
+              Adicionar novo livro
+              <BookOpenUser />
+            </Button>
           </S.TopSection>
 
           <S.StatsGrid>
