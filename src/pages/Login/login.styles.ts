@@ -1,4 +1,6 @@
+import { Button } from "@radix-ui/themes";
 import styled from "styled-components";
+import { colors } from "../../theme/colors";
 
 export const LoginContainer = styled.div`
   display: flex;
@@ -44,6 +46,7 @@ export const SocialLoginContainer = styled.div`
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
+  margin-bottom: 1rem;
 `;
 
 export const Divider = styled.div`
@@ -62,4 +65,9 @@ export const Divider = styled.div`
     margin: 0 1rem;
     color: #666;
   }
+`;
+
+export const SignInButton = styled(Button)`
+  background-color: ${colors.primary};
+  color: white;
 `;
