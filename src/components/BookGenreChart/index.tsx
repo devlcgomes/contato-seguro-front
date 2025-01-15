@@ -1,16 +1,118 @@
 import { Text } from "@radix-ui/themes";
 import * as S from "./styles";
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  Cell,
+} from "recharts";
+import { books } from "../../data/mockup";
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+
+// Dados simulados para os gráficos
+const monthlyData = [
+  { month: "Jan", books: 4 },
+  { month: "Fev", books: 3 },
+  { month: "Mar", books: 6 },
+  { month: "Abr", books: 8 },
+  { month: "Mai", books: 7 },
+  { month: "Jun", books: 10 },
+];
+
+const genreData = [
+  { genre: "Ficção", count: 15 },
+  { genre: "Romance", count: 10 },
+  { genre: "Técnico", count: 8 },
+  { genre: "Aventura", count: 12 },
+];
 
 export function BookGenreChart() {
   return (
     <S.ChartContainer>
-      <Text size="5" weight="bold" mb="4">
-        Book Genres Analytics
-      </Text>
-      <div>
-        {/* Aqui iremos implementar o gráfico usando uma biblioteca como recharts ou chart.js */}
-        <Text>Chart will be implemented here</Text>
-      </div>
+      <S.ChartGrid>
+        <S.ChartCard>
+          <Text size="3" weight="bold" mb="4">
+            Livros Adicionados por Mês
+          </Text>
+          <LineChart width={400} height={200} data={monthlyData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="books"
+              stroke="#8884d8"
+              activeDot={{ r: 8 }}
+            />
+          </LineChart>
+        </S.ChartCard>
+
+        <S.ChartCard>
+          <Text size="3" weight="bold" mb="4">
+            Livros por Gênero
+          </Text>
+          <BarChart width={400} height={200} data={genreData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="genre" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="count" fill="#82ca9d" />
+          </BarChart>
+        </S.ChartCard>
+
+        <S.ChartCard>
+          <Text size="3" weight="bold" mb="4">
+            Distribuição de Autores
+          </Text>
+          <PieChart width={400} height={250}>
+            <Pie
+              data={books}
+              cx={200}
+              cy={100}
+              labelLine={true}
+              outerRadius={70}
+              innerRadius={40}
+              fill="#8884d8"
+              dataKey="id"
+              nameKey="author"
+              label={({ author, percent }) =>
+                `${author} (${(percent * 100).toFixed(0)}%)`
+              }
+            >
+              {books.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip
+              formatter={(value, name, props) => [
+                props.payload.author,
+                "Autor",
+              ]}
+            />
+            <Legend
+              layout="vertical"
+              align="right"
+              verticalAlign="middle"
+              wrapperStyle={{ paddingLeft: "20px" }}
+            />
+          </PieChart>
+        </S.ChartCard>
+      </S.ChartGrid>
     </S.ChartContainer>
   );
 }

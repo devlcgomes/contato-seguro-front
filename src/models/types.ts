@@ -7,7 +7,7 @@ export interface Author {
 export interface Book {
   id: string;
   name: string;
-  author_id: string;
+  author: Author;
   pages?: number;
   gender: string;
 }

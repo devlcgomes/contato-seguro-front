@@ -23,11 +23,16 @@ export const MenuItem = styled.div<{ active?: boolean }>`
   padding: 12px 16px;
   border-radius: 8px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   background: ${(props) =>
     props.active ? colors.primary + "20" : "transparent"};
   color: ${(props) => (props.active ? colors.primary : "inherit")};
+  transition: all 0.2s;
 
   &:hover {
     background: ${colors.primary + "10"};
+    transform: translateX(4px);
   }
 `;
