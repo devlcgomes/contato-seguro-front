@@ -59,11 +59,11 @@ Lembre-se: O básico bem feito é melhor que o complicado mal feito.
 -
 - React Context API
   Docker
-  TypeScript
+  TypeScript - OK
   JSDoc
   Testes de componente (Cypress)
   Trechos de código reutilizáveis, como funções e componentes
-  Styled Components
+  Styled Components - OK
   Mais dicas
 -
 -
@@ -72,6 +72,7 @@ Lembre-se: O básico bem feito é melhor que o complicado mal feito.
 -
 - Caso você não esteja confiante com TypeScript, pode ser legal dar uma olhada em
   JSDoc
+
   Para estilização, você pode usar CSS puro, CSS Modules ou Styled Components
   Para montar a tabela, você não precisa de nenhuma biblioteca, mas caso queira uma,
   pode ser legal dar uma olhada em TanStack Table

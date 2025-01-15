@@ -1,17 +1,33 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Button, Text, Checkbox, TextField } from "@radix-ui/themes";
 import * as S from "./login.styles";
 import loginImg from "../../assets/loginImg.png";
 import logoBook from "../../assets/logoBook.png";
+import { useNavigate } from "react-router-dom";
+
+interface LoginFormData {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+}
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Implementar lógica de login aqui
+  const onSubmit = (data: LoginFormData) => {
+    console.log("Dados do login:", {
+      email: data.email,
+      password: data.password,
+      rememberMe: data.rememberMe,
+    });
+
+    // Redireciona para o Dashboard
+    navigate("/dashboard");
   };
 
   return (
@@ -26,23 +42,42 @@ export default function LoginScreen() {
           Insira suas credenciais para acessar a plataforma
         </Text>
 
-        <S.FormContainer onSubmit={handleSubmit}>
+        <S.FormContainer onSubmit={handleSubmit(onSubmit)}>
           <S.InputContainer>
             <TextField.Root
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...register("email", {
+                required: "Email é obrigatório",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Email inválido",
+                },
+              })}
+              placeholder="Insira seu email"
             />
+            {errors.email && (
+              <Text size="1" color="red" mt="1">
+                {errors.email.message}
+              </Text>
+            )}
           </S.InputContainer>
 
           <S.InputContainer>
             <TextField.Root
-              size="3"
               type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password", {
+                required: "Senha é obrigatória",
+                minLength: {
+                  value: 6,
+                  message: "Senha deve ter no mínimo 6 caracteres",
+                },
+              })}
+              placeholder="Insira sua senha"
             />
+            {errors.password && (
+              <Text size="1" color="red" mt="1">
+                {errors.password.message}
+              </Text>
+            )}
           </S.InputContainer>
 
           <div
@@ -56,38 +91,45 @@ export default function LoginScreen() {
             <label
               style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
             >
-              <Checkbox
-                checked={rememberMe}
-                onCheckedChange={(checked) => setRememberMe(checked as boolean)}
-              />
-              <Text size="2">Remember for 30 Days</Text>
+              <Checkbox {...register("rememberMe")} />
+              <Text size="2">Manter conectado por 30 dias</Text>
             </label>
             <Text size="2" color="blue" style={{ cursor: "pointer" }}>
-              Forgot password
+              Esqueceu sua senha?
             </Text>
           </div>
 
-          <Button size="3" style={{ width: "100%", marginBottom: "1rem" }}>
-            Sign in
+          <Button
+            type="submit"
+            size="3"
+            color="orange"
+            style={{ width: "100%", marginBottom: "1rem" }}
+          >
+            Entrar
           </Button>
 
           <S.Divider>
-            <span>OR</span>
+            <span>Ou</span>
           </S.Divider>
 
           <S.SocialLoginContainer>
-            <Button variant="outline" size="3" style={{ width: "50%" }}>
-              Sign up with Google
+            <Button
+              variant="soft"
+              size="3"
+              color="gray"
+              style={{ width: "50%" }}
+            >
+              Entrar com Google
             </Button>
-            <Button variant="outline" size="3" style={{ width: "50%" }}>
-              Sign up with Facebook
+            <Button variant="soft" size="3" style={{ width: "50%" }}>
+              Entrar com Facebook
             </Button>
           </S.SocialLoginContainer>
 
-          <Text align="center" mt="4" size="2">
-            Don't have an account?{" "}
-            <Text color="blue" style={{ cursor: "pointer" }}>
-              Sign up
+          <Text align="center" mt="8" size="2">
+            Não tem uma conta?{" "}
+            <Text color="blue" mt="4" style={{ cursor: "pointer" }}>
+              Cadastre-se
             </Text>
           </Text>
         </S.FormContainer>

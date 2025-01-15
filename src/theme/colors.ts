@@ -1,5 +1,5 @@
 export const colors = {
-  orange: "#f4940c",
-  orangeDark: "#ef6d0c",
-  orangeLight: "#f4c48c",
+  primary: "#ef6d0c",
+  primaryDark: "#ef6d0c",
+  primaryLight: "#f4c48c",
 };
