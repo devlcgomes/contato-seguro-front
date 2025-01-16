@@ -1,6 +1,5 @@
 import { Button, Text } from "@radix-ui/themes";
 import * as S from "./dashboard.styles";
-import { Sidebar } from "../../components/Sidebar";
 import { BookStats } from "../../components/BookStats";
 import { RecentBooks } from "../../components/RecentBooks";
 import { BookGenreChart } from "../../components/BookGenreChart";
@@ -16,58 +15,53 @@ export default function DashboardScreen() {
     useAuthors();
 
   return (
-    <S.DashboardContainer>
-      <Sidebar />
-      <S.MainContent>
-        <S.ContentArea>
-          <S.TopSection>
-            <Text size="6" weight="bold">
-              Meus Livros
-            </Text>
-            <S.ButtonGroup>
-              <Button size="3" onClick={() => setIsModalOpen(true)}>
-                Adicionar novo livro
-                <BookOpenUser />
-              </Button>
-              <Button
-                size="3"
-                variant="soft"
-                onClick={() => setIsAuthorModalOpen(true)}
-              >
-                Adicionar autor
-                <UserPlus />
-              </Button>
-            </S.ButtonGroup>
-          </S.TopSection>
+    <S.ContentArea>
+      <S.TopSection>
+        <Text size="6" weight="bold">
+          Meus Livros
+        </Text>
+        <S.ButtonGroup>
+          <Button size="3" onClick={() => setIsModalOpen(true)}>
+            Adicionar novo livro
+            <BookOpenUser />
+          </Button>
+          <Button
+            size="3"
+            variant="soft"
+            onClick={() => setIsAuthorModalOpen(true)}
+          >
+            Adicionar autor
+            <UserPlus />
+          </Button>
+        </S.ButtonGroup>
+      </S.TopSection>
 
-          <S.StatsGrid>
-            <BookStats />
-          </S.StatsGrid>
+      <S.StatsGrid>
+        <BookStats />
+      </S.StatsGrid>
 
-          <S.ChartSection>
-            <BookGenreChart />
-          </S.ChartSection>
+      <S.ChartSection>
+        <BookGenreChart />
+      </S.ChartSection>
 
-          <S.RecentSection>
-            <Text size="5" weight="bold">
-              Recent Books
-            </Text>
-            <RecentBooks />
-          </S.RecentSection>
-        </S.ContentArea>
+      <S.RecentSection>
+        <Text size="5" weight="bold">
+          Recent Books
+        </Text>
+        <RecentBooks />
+      </S.RecentSection>
 
-        <AddBookModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onAddBook={addBook}
-        />
+      <AddBookModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAddBook={addBook}
+      />
 
-        <AddAuthorModal
-          isOpen={isAuthorModalOpen}
-          onClose={() => setIsAuthorModalOpen(false)}
-          onAddAuthor={addAuthor}
-        />
-      </S.MainContent>
-    </S.DashboardContainer>
+      <AddAuthorModal
+        isOpen={isAuthorModalOpen}
+        onClose={() => setIsAuthorModalOpen(false)}
+        onAddAuthor={addAuthor}
+      />
+    </S.ContentArea>
   );
 }

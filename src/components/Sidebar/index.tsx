@@ -2,27 +2,33 @@ import { Text } from "@radix-ui/themes";
 import * as S from "./styles";
 import logoBook from "../../assets/logoBook.png";
 import { House, Books, Users, FolderOpen, Gear } from "@phosphor-icons/react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export function Sidebar() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
     <S.SidebarContainer>
       <S.Logo src={logoBook} alt="Logo" />
       <S.NavMenu>
-        <S.MenuItem active>
+        <S.MenuItem
+          active={location.pathname === "/dashboard"}
+          onClick={() => navigate("/dashboard")}
+        >
           <House size={20} />
           <Text>Dashboard</Text>
         </S.MenuItem>
-        <S.MenuItem>
+        <S.MenuItem
+          active={location.pathname === "/books"}
+          onClick={() => navigate("/books")}
+        >
           <Books size={20} />
-          <Text>Books</Text>
+          <Text>Livros</Text>
         </S.MenuItem>
         <S.MenuItem>
           <Users size={20} />
-          <Text>Authors</Text>
-        </S.MenuItem>
-        <S.MenuItem>
-          <FolderOpen size={20} />
-          <Text>My Files</Text>
+          <Text>Autores</Text>
         </S.MenuItem>
         <S.MenuItem>
           <Gear size={20} />
