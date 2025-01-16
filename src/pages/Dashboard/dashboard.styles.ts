@@ -71,7 +71,6 @@ export const ChartSection = styled.div`
   padding: 24px;
   border-radius: 12px;
   margin-bottom: 24px;
-  border: 3px solid pink;
 `;
 
 export const RecentSection = styled.div`

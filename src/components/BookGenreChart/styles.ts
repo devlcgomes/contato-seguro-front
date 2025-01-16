@@ -3,14 +3,12 @@ import styled from "styled-components";
 export const ChartContainer = styled.div`
   width: 100%;
   padding: 20px;
-  border: 3px solid cadetblue;
 `;
 
 export const ChartGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
-  border: 3px solid red;
   padding: 16px;
 
   @media (max-width: 1400px) {
@@ -30,8 +28,7 @@ export const ChartCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 3px solid yellow;
-  
+
   > div {
     width: 100%;
     height: 100%;
