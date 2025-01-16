@@ -7,7 +7,6 @@ export function Sidebar() {
   return (
     <S.SidebarContainer>
       <S.Logo src={logoBook} alt="Logo" />
-
       <S.NavMenu>
         <S.MenuItem active>
           <House size={20} />
