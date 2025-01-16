@@ -4,6 +4,7 @@ import LoginScreen from "./pages/Login/LoginScreen";
 import DashboardScreen from "./pages/Dashboard/DashboardScreen";
 import BooksScreen from "./pages/Books/BooksScreen";
 import { Layout } from "./components/Layout";
+import AuthorsScreen from "./pages/Authors/AuthorsScreen";
 
 export default function App() {
   return (
@@ -25,6 +26,14 @@ export default function App() {
             element={
               <Layout>
                 <BooksScreen />
+              </Layout>
+            }
+          />
+          <Route
+            path="/authors"
+            element={
+              <Layout>
+                <AuthorsScreen />
               </Layout>
             }
           />

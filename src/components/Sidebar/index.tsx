@@ -26,7 +26,10 @@ export function Sidebar() {
           <Books size={20} />
           <Text>Livros</Text>
         </S.MenuItem>
-        <S.MenuItem>
+        <S.MenuItem
+          active={location.pathname === "/authors"}
+          onClick={() => navigate("/authors")}
+        >
           <Users size={20} />
           <Text>Autores</Text>
         </S.MenuItem>
