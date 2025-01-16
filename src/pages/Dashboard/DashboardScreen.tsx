@@ -11,12 +11,6 @@ export default function DashboardScreen() {
     <S.DashboardContainer>
       <Sidebar />
       <S.MainContent>
-        <S.Header>
-          <S.SearchContainer>
-            <input type="text" placeholder="Search" />
-          </S.SearchContainer>
-          <S.UserSection>{/* Ícones de tema e notificação */}</S.UserSection>
-        </S.Header>
 
         <S.ContentArea>
           <S.TopSection>

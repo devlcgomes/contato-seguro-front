@@ -3,12 +3,23 @@ import styled from "styled-components";
 export const ChartContainer = styled.div`
   width: 100%;
   padding: 20px;
+  border: 3px solid cadetblue;
 `;
 
 export const ChartGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 32px;
+  border: 3px solid red;
+  padding: 16px;
+
+  @media (max-width: 1400px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 968px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const ChartCard = styled.div`
@@ -19,9 +30,14 @@ export const ChartCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  &:hover {
-    transform: translateY(-2px);
-    transition: transform 0.2s;
+  border: 3px solid yellow;
+  
+  > div {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;

@@ -37,82 +37,66 @@ const genreData = [
 
 export function BookGenreChart() {
   return (
-    <S.ChartContainer>
-      <S.ChartGrid>
-        <S.ChartCard>
-          <Text size="3" weight="bold" mb="4">
-            Livros Adicionados por Mês
-          </Text>
-          <LineChart width={400} height={200} data={monthlyData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="books"
-              stroke="#8884d8"
-              activeDot={{ r: 8 }}
-            />
-          </LineChart>
-        </S.ChartCard>
+    <S.ChartGrid>  <S.ChartCard>
+        <Text size="3" weight="bold" mb="4">
+          Distribuição por Gênero
+        </Text>
+        <PieChart width={400} height={200}>
+          <Pie
+            data={genreData}
+            cx="50%"
+            cy="50%"
+            labelLine={false}
+            outerRadius={80}
+            fill="#8884d8"
+            dataKey="count"
+            nameKey="genre"
+            label={({ name, percent }) => 
+              `${name} ${(percent * 100).toFixed(0)}%`
+            }
+          >
+            {genreData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </S.ChartCard>  <S.ChartCard>
+        <Text size="3" weight="bold" mb="4">
+          Livros por Gênero
+        </Text>
+        <BarChart width={400} height={200} data={genreData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="genre" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="count" fill="#82ca9d" />
+        </BarChart>
+      </S.ChartCard>
 
-        <S.ChartCard>
-          <Text size="3" weight="bold" mb="4">
-            Livros por Gênero
-          </Text>
-          <BarChart width={400} height={200} data={genreData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="genre" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="count" fill="#82ca9d" />
-          </BarChart>
-        </S.ChartCard>
+      <S.ChartCard>
+        <Text size="3" weight="bold" mb="4">
+          Livros Adicionados por Mês
+        </Text>
+        <LineChart width={400} height={200} data={monthlyData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="month" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="books"
+            stroke="#8884d8"
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
+      </S.ChartCard>
 
-        <S.ChartCard>
-          <Text size="3" weight="bold" mb="4">
-            Distribuição de Autores
-          </Text>
-          <PieChart width={400} height={250}>
-            <Pie
-              data={books}
-              cx={200}
-              cy={100}
-              labelLine={true}
-              outerRadius={70}
-              innerRadius={40}
-              fill="#8884d8"
-              dataKey="id"
-              nameKey="author"
-              label={({ author, percent }) =>
-                `${author} (${(percent * 100).toFixed(0)}%)`
-              }
-            >
-              {books.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip
-              formatter={(value, name, props) => [
-                props.payload.author,
-                "Autor",
-              ]}
-            />
-            <Legend
-              layout="vertical"
-              align="right"
-              verticalAlign="middle"
-              wrapperStyle={{ paddingLeft: "20px" }}
-            />
-          </PieChart>
-        </S.ChartCard>
-      </S.ChartGrid>
-    </S.ChartContainer>
+    
+    
+    </S.ChartGrid>
   );
 }
