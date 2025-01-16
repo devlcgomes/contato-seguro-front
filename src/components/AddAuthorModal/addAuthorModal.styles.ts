@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Dialog } from "@radix-ui/themes";
 import { colors } from "../../theme/colors";
+import { BaseModalContent } from "../../styles/modal.styles";
 
 export const FormContainer = styled.form`
   display: flex;
@@ -56,17 +57,8 @@ export const ButtonsContainer = styled.div`
   margin-top: 8px;
 `;
 
-export const ModalContent = styled(Dialog.Content)`
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  width: 100%;
+export const ModalContent = styled(BaseModalContent)`
   max-width: 500px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 
   [data-radix-dialog-title] {
     color: ${colors.text};
