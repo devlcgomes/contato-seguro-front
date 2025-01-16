@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Button, Dialog } from "@radix-ui/themes";
 import * as S from "./addBookModal.styles";
+import { useAuthors } from "../../hooks/useAuthors";
 
 interface AddBookModalProps {
   isOpen: boolean;
   onClose: () => void;
   onAddBook: (book: {
     title: string;
-    author: string;
+    authorId: number;
+    authorName: string;
     genre: string;
     pages: number;
   }) => void;
@@ -18,20 +20,41 @@ export function AddBookModal({
   onClose,
   onAddBook,
 }: AddBookModalProps) {
+  const { authors } = useAuthors();
   const [formData, setFormData] = useState({
     title: "",
-    author: "",
+    authorId: "",
+    authorName: "",
     genre: "",
     pages: "",
   });
+
+  const handleAuthorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedAuthor = authors.find(
+      (author) => author.id === Number(e.target.value)
+    );
+
+    setFormData({
+      ...formData,
+      authorId: e.target.value,
+      authorName: selectedAuthor?.name || "",
+    });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onAddBook({
       ...formData,
+      authorId: Number(formData.authorId),
       pages: Number(formData.pages),
     });
-    setFormData({ title: "", author: "", genre: "", pages: "" });
+    setFormData({
+      title: "",
+      authorId: "",
+      authorName: "",
+      genre: "",
+      pages: "",
+    });
     onClose();
   };
 
@@ -56,15 +79,19 @@ export function AddBookModal({
 
             <S.InputWrapper>
               <label htmlFor="author">Autor</label>
-              <input
+              <select
                 id="author"
-                placeholder="Digite o nome do autor"
-                value={formData.author}
-                onChange={(e) =>
-                  setFormData({ ...formData, author: e.target.value })
-                }
+                value={formData.authorId}
+                onChange={handleAuthorChange}
                 required
-              />
+              >
+                <option value="">Selecione um autor</option>
+                {authors.map((author) => (
+                  <option key={author.id} value={author.id}>
+                    {author.name}
+                  </option>
+                ))}
+              </select>
             </S.InputWrapper>
 
             <S.InputWrapper>
@@ -99,7 +126,6 @@ export function AddBookModal({
             <Button color="orange" type="submit">
               Salvar
             </Button>
-
             <Button type="button" onClick={onClose} color="gray">
               Cancelar
             </Button>

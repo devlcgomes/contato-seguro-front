@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { colors } from "../../theme/colors";
 import { Dialog } from "@radix-ui/themes";
+import { colors } from "../../theme/colors";
 
 export const FormContainer = styled.form`
   display: flex;
@@ -26,15 +26,12 @@ export const InputWrapper = styled.div`
   }
 
   input,
-  select {
-    height: 40px;
-    padding: 0 16px;
+  textarea {
+    padding: 8px 16px;
     border: 2px solid #e2e8f0;
     border-radius: 8px;
     font-size: 14px;
     transition: all 0.2s;
-    background-color: white;
-    color: ${colors.text};
 
     &:focus {
       outline: none;
@@ -47,24 +44,9 @@ export const InputWrapper = styled.div`
     }
   }
 
-  select {
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px center;
-    padding-right: 40px;
-
-    option {
-      color: ${colors.text};
-      background: white;
-      padding: 12px 16px;
-      font-size: 14px;
-    }
-
-    &:invalid {
-      color: #94a3b8;
-    }
+  textarea {
+    resize: vertical;
+    min-height: 100px;
   }
 `;
 

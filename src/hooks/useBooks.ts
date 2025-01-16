@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 interface Book {
   id: number;
   title: string;
-  author: string;
+  authorId: number;
+  authorName: string;
   genre: string;
   pages: number;
 }
