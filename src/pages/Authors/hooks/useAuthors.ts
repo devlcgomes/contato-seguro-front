@@ -1,46 +1,57 @@
-import { useState, useEffect } from "react";
-import { Author } from "../../../types/author";
+import { useState } from "react";
+import { useLocalStorage } from "../../../hooks/useLocalStorage";
+
+interface Author {
+  id: string;
+  name: string;
+  email: string;
+  booksCount: number;
+}
 
 export function useAuthors() {
-  const [authors, setAuthors] = useState<Author[]>([]);
+  const [authors, setAuthors] = useLocalStorage<Author[]>("authors", []);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    const storedAuthors = localStorage.getItem("authors");
-    if (storedAuthors) {
-      setAuthors(JSON.parse(storedAuthors));
-    }
-  }, []);
+  const filteredAuthors = authors.filter((author) =>
+    author.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
   const handleAddAuthor = () => {
-    // Implementar lógica para adicionar autor
-    console.log("Adicionar autor");
+    setIsModalOpen(true);
   };
 
-  const handleEditAuthor = (id: number) => {
-    console.log("Editar autor", id);
+  const addAuthor = (authorData: { name: string; email: string }) => {
+    const newAuthor: Author = {
+      id: String(Math.random()),
+      name: authorData.name,
+      email: authorData.email,
+      booksCount: 0,
+    };
+    setAuthors([...authors, newAuthor]);
   };
 
-  const handleDeleteAuthor = (id: number) => {
-    const updatedAuthors = authors.filter((author) => author.id !== id);
-    setAuthors(updatedAuthors);
-    localStorage.setItem("authors", JSON.stringify(updatedAuthors));
+  const handleEditAuthor = (id: string) => {
+    // Implementar edição
   };
 
-  const filteredAuthors = authors.filter((author) =>
-    author.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleDeleteAuthor = (id: string) => {
+    setAuthors(authors.filter((author) => author.id !== id));
+  };
 
   return {
     authors,
     searchTerm,
     filteredAuthors,
+    isModalOpen,
+    setIsModalOpen,
     handleSearch,
     handleAddAuthor,
+    addAuthor,
     handleEditAuthor,
     handleDeleteAuthor,
   };

@@ -1,16 +1,12 @@
-import { useState } from "react";
-import { Button, Dialog } from "@radix-ui/themes";
+import { Button, Dialog, Flex, Text } from "@radix-ui/themes";
+import { X } from "@phosphor-icons/react";
 import * as S from "./addAuthorModal.styles";
+import { useState, ChangeEvent } from "react";
 
 interface AddAuthorModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddAuthor: (author: {
-    name: string;
-    birthDate: string;
-    nationality: string;
-    biography: string;
-  }) => void;
+  onAddAuthor: (author: { name: string; email: string }) => void;
 }
 
 export function AddAuthorModal({
@@ -18,90 +14,76 @@ export function AddAuthorModal({
   onClose,
   onAddAuthor,
 }: AddAuthorModalProps) {
-  const [formData, setFormData] = useState({
-    name: "",
-    birthDate: "",
-    nationality: "",
-    biography: "",
-  });
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onAddAuthor(formData);
-    setFormData({ name: "", birthDate: "", nationality: "", biography: "" });
+    onAddAuthor({ name, email });
+    setName("");
+    setEmail("");
     onClose();
+  };
+
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
   };
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
-      <S.ModalContent>
-        <Dialog.Title>Adicionar novo autor</Dialog.Title>
-        <S.FormContainer onSubmit={handleSubmit}>
-          <S.InputGroup>
-            <S.InputWrapper>
-              <label htmlFor="name">Nome do autor</label>
-              <input
-                id="name"
+      <Dialog.Content style={{ maxWidth: 450 }}>
+        <S.Header>
+          <Text size="5" weight="bold">
+            Adicionar novo autor
+          </Text>
+          <Button variant="ghost" onClick={onClose}>
+            <X size={24} />
+          </Button>
+        </S.Header>
+
+        <form onSubmit={handleSubmit}>
+          <Flex direction="column" gap="4">
+            <Flex direction="column" gap="2">
+              <Text size="2" weight="bold">
+                Nome do autor
+              </Text>
+              <S.Input
+                type="text"
                 placeholder="Digite o nome do autor"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
+                value={name}
+                onChange={handleNameChange}
                 required
               />
-            </S.InputWrapper>
+            </Flex>
 
-            <S.InputWrapper>
-              <label htmlFor="birthDate">Data de nascimento</label>
-              <input
-                id="birthDate"
-                type="date"
-                value={formData.birthDate}
-                onChange={(e) =>
-                  setFormData({ ...formData, birthDate: e.target.value })
-                }
+            <Flex direction="column" gap="2">
+              <Text size="2" weight="bold">
+                Email
+              </Text>
+              <S.Input
+                type="email"
+                placeholder="Digite o email do autor"
+                value={email}
+                onChange={handleEmailChange}
                 required
               />
-            </S.InputWrapper>
+            </Flex>
 
-            <S.InputWrapper>
-              <label htmlFor="nationality">Nacionalidade</label>
-              <input
-                id="nationality"
-                placeholder="Digite a nacionalidade"
-                value={formData.nationality}
-                onChange={(e) =>
-                  setFormData({ ...formData, nationality: e.target.value })
-                }
-                required
-              />
-            </S.InputWrapper>
-
-            <S.InputWrapper>
-              <label htmlFor="biography">Biografia</label>
-              <textarea
-                id="biography"
-                placeholder="Digite uma breve biografia"
-                value={formData.biography}
-                onChange={(e) =>
-                  setFormData({ ...formData, biography: e.target.value })
-                }
-                rows={4}
-                required
-              />
-            </S.InputWrapper>
-          </S.InputGroup>
-
-          <S.ButtonsContainer>
-            <Button color="orange" type="submit">
-              Salvar
-            </Button>
-            <Button type="button" onClick={onClose} color="gray">
-              Cancelar
-            </Button>
-          </S.ButtonsContainer>
-        </S.FormContainer>
-      </S.ModalContent>
+            <Flex gap="3" mt="4" justify="end">
+              <Button variant="soft" color="gray" onClick={onClose}>
+                Cancelar
+              </Button>
+              <Button type="submit" color="orange">
+                Adicionar autor
+              </Button>
+            </Flex>
+          </Flex>
+        </form>
+      </Dialog.Content>
     </Dialog.Root>
   );
 }

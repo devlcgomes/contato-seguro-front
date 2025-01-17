@@ -23,14 +23,18 @@ import {
 } from "./authors.styles";
 import { useAuthors } from "./hooks/useAuthors";
 import { Button } from "@radix-ui/themes";
+import { AddAuthorModal } from "../../components/AddAuthorModal";
 
 export default function AuthorsScreen() {
   const {
     authors,
     searchTerm,
     filteredAuthors,
+    isModalOpen,
+    setIsModalOpen,
     handleSearch,
     handleAddAuthor,
+    addAuthor,
     handleEditAuthor,
     handleDeleteAuthor,
   } = useAuthors();
@@ -99,6 +103,12 @@ export default function AuthorsScreen() {
           </Table>
         </TableContainer>
       )}
+
+      <AddAuthorModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAddAuthor={addAuthor}
+      />
     </Container>
   );
 }
