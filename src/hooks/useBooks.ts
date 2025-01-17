@@ -1,39 +1,44 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useLocalStorage } from "./useLocalStorage";
 
 interface Book {
-  id: number;
+  id: string;
   title: string;
   author: string;
   genre: string;
   pages: number;
+  status: "read" | "unread";
 }
 
 export function useBooks() {
-  const [books, setBooks] = useState<Book[]>([]);
+  const [books, setBooks] = useLocalStorage<Book[]>("books", []);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    const storedBooks = localStorage.getItem("books");
-    if (storedBooks) {
-      setBooks(JSON.parse(storedBooks));
-    } else {
-      // Importa os livros mockados inicialmente
-      import("../data/mockup").then(({ books: mockBooks }) => {
-        setBooks(mockBooks);
-        localStorage.setItem("books", JSON.stringify(mockBooks));
-      });
-    }
-  }, []);
-
-  const addBook = (newBook: Omit<Book, "id">) => {
-    const book = {
-      ...newBook,
-      id: books.length + 1,
+  const addBook = (bookData: Omit<Book, "id" | "status">) => {
+    const newBook: Book = {
+      id: String(Math.random()),
+      ...bookData,
+      status: "unread",
     };
+    setBooks([...books, newBook]);
+    setIsModalOpen(false);
+  };
 
-    const updatedBooks = [...books, book];
-    setBooks(updatedBooks);
-    localStorage.setItem("books", JSON.stringify(updatedBooks));
+  const toggleBookStatus = (bookId: string) => {
+    setBooks(
+      books.map((book) =>
+        book.id === bookId
+          ? {
+              ...book,
+              status: book.status === "read" ? "unread" : "read",
+            }
+          : book
+      )
+    );
+  };
+
+  const deleteBook = (bookId: string) => {
+    setBooks(books.filter((book) => book.id !== bookId));
   };
 
   return {
@@ -41,5 +46,7 @@ export function useBooks() {
     isModalOpen,
     setIsModalOpen,
     addBook,
+    toggleBookStatus,
+    deleteBook,
   };
 }

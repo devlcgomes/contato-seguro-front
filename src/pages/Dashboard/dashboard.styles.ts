@@ -78,3 +78,9 @@ export const RecentSection = styled.div`
   padding: 24px;
   border-radius: 12px;
 `;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  gap: 12px;
+  align-items: center;
+`;
