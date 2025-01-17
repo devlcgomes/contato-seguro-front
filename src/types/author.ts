@@ -1,10 +1,6 @@
 export interface Author {
-  id: string;
+  id: number;
   name: string;
-  nationality: string;
-  birthDate: string;
-  books?: {
-    id: string;
-    title: string;
-  }[];
+  email: string;
+  booksCount: number;
 }

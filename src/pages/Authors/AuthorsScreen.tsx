@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import {
   MagnifyingGlass,
   Plus,
@@ -22,50 +21,19 @@ import {
   EmptyStateDescription,
   EmptyStateButton,
 } from "./authors.styles";
-
-// Interface para o tipo Author
-interface Author {
-  id: number;
-  name: string;
-  email: string;
-  booksCount: number;
-}
+import { useAuthors } from "./hooks/useAuthors";
+import { Button } from "@radix-ui/themes";
 
 export default function AuthorsScreen() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [authors, setAuthors] = useState<Author[]>([]);
-
-  // Carrega os autores do localStorage quando o componente é montado
-  useEffect(() => {
-    const storedAuthors = localStorage.getItem("authors");
-    if (storedAuthors) {
-      setAuthors(JSON.parse(storedAuthors));
-    }
-  }, []);
-
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleAddAuthor = () => {
-    // Implementar lógica para adicionar autor
-    console.log("Adicionar autor");
-  };
-
-  const handleEditAuthor = (id: number) => {
-    console.log("Editar autor", id);
-  };
-
-  const handleDeleteAuthor = (id: number) => {
-    const updatedAuthors = authors.filter((author) => author.id !== id);
-    setAuthors(updatedAuthors);
-    localStorage.setItem("authors", JSON.stringify(updatedAuthors));
-  };
-
-  // Filtra os autores com base no termo de busca
-  const filteredAuthors = authors.filter((author) =>
-    author.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const {
+    authors,
+    searchTerm,
+    filteredAuthors,
+    handleSearch,
+    handleAddAuthor,
+    handleEditAuthor,
+    handleDeleteAuthor,
+  } = useAuthors();
 
   return (
     <Container>
@@ -79,10 +47,10 @@ export default function AuthorsScreen() {
             onChange={handleSearch}
           />
         </SearchContainer>
-        <AddButton onClick={handleAddAuthor}>
+        <Button size="3" color="orange" onClick={handleAddAuthor}>
           <Plus size={20} />
           Adicionar Autor
-        </AddButton>
+        </Button>
       </Header>
 
       {authors.length === 0 ? (
@@ -91,10 +59,10 @@ export default function AuthorsScreen() {
           <EmptyStateDescription>
             Você ainda não possui nenhum autor cadastrado no sistema.
           </EmptyStateDescription>
-          <EmptyStateButton onClick={handleAddAuthor}>
+          <Button size="3" color="orange" onClick={handleAddAuthor}>
             <Plus size={20} />
             Cadastrar Primeiro Autor
-          </EmptyStateButton>
+          </Button>
         </EmptyState>
       ) : (
         <TableContainer>
