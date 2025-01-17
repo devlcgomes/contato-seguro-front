@@ -35,10 +35,6 @@ export function useAuthors() {
     setAuthors([...authors, newAuthor]);
   };
 
-  const handleEditAuthor = (id: string) => {
-    // Implementar edição
-  };
-
   const handleDeleteAuthor = (id: string) => {
     setAuthors(authors.filter((author) => author.id !== id));
   };
@@ -52,7 +48,6 @@ export function useAuthors() {
     handleSearch,
     handleAddAuthor,
     addAuthor,
-    handleEditAuthor,
     handleDeleteAuthor,
   };
 }

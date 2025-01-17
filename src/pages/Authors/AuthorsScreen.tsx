@@ -1,15 +1,9 @@
-import {
-  MagnifyingGlass,
-  Plus,
-  PencilSimple,
-  Trash,
-} from "@phosphor-icons/react";
+import { MagnifyingGlass, Plus, Trash } from "@phosphor-icons/react";
 import {
   Container,
   Header,
   SearchContainer,
   SearchInput,
-  AddButton,
   TableContainer,
   Table,
   Th,
@@ -19,7 +13,6 @@ import {
   EmptyState,
   EmptyStateTitle,
   EmptyStateDescription,
-  EmptyStateButton,
 } from "./authors.styles";
 import { useAuthors } from "./hooks/useAuthors";
 import { Button } from "@radix-ui/themes";
@@ -35,7 +28,6 @@ export default function AuthorsScreen() {
     handleSearch,
     handleAddAuthor,
     addAuthor,
-    handleEditAuthor,
     handleDeleteAuthor,
   } = useAuthors();
 
@@ -87,9 +79,10 @@ export default function AuthorsScreen() {
                   <Td>{author.booksCount}</Td>
                   <Td>
                     <ActionsContainer>
-                      <ActionButton onClick={() => handleEditAuthor(author.id)}>
+                      {/* Remover ou comentar este botão por enquanto */}
+                      {/*<ActionButton onClick={() => handleEditAuthor(author.id)}>
                         <PencilSimple size={20} />
-                      </ActionButton>
+                      </ActionButton>*/}
                       <ActionButton
                         onClick={() => handleDeleteAuthor(author.id)}
                       >

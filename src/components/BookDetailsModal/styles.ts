@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Dialog } from "@radix-ui/themes";
 import { colors } from "../../theme/colors";
 import { BaseModalContent } from "../../styles/modal.styles";
 
@@ -7,7 +6,6 @@ export const ModalContent = styled(BaseModalContent)`
   max-width: 500px;
 
   [data-radix-dialog-title] {
-    color: ${colors.text};
     margin-bottom: 24px;
     font-size: 20px;
     font-weight: 600;
@@ -43,7 +41,6 @@ export const InfoItem = styled.div`
 
     p {
       font-size: 16px;
-      color: ${colors.text};
     }
   }
 `;

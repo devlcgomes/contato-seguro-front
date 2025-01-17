@@ -53,10 +53,6 @@ export function useBooks() {
     setIsModalOpen(false);
   };
 
-  const handleEditBook = (id: string) => {
-    // Implementar edição
-  };
-
   const handleDeleteBook = (id: string) => {
     setBooks(books.filter((book) => book.id !== id));
   };
@@ -70,7 +66,6 @@ export function useBooks() {
     handleSearch,
     handleAddBook,
     addBook,
-    handleEditBook,
     handleDeleteBook,
   };
 }

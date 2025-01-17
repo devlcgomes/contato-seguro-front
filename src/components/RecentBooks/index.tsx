@@ -1,11 +1,9 @@
-import { useRecentBooks } from "../../hooks/useRecentBooks";
 import { useBooks } from "../../hooks/useBooks";
 import * as S from "./styles";
-import { Book, Trash, Eye } from "@phosphor-icons/react";
-import { BookDetailsModal } from "../BookDetailsModal";
+import { Trash, Eye } from "@phosphor-icons/react";
 import { Button } from "@radix-ui/themes";
-import { DeleteConfirmationDialog } from "../DeleteConfirmationDialog";
 import { Table } from "@radix-ui/themes";
+import { Book } from "../../types/book";
 
 interface RecentBooksProps {
   showAll?: boolean;
@@ -14,6 +12,14 @@ interface RecentBooksProps {
 export function RecentBooks({ showAll = false }: RecentBooksProps) {
   const { books } = useBooks();
   const displayBooks = showAll ? books : books.slice(0, 5);
+
+  const handleDeleteBook = (_id: string) => {
+    // Implementar lógica de deleção
+  };
+
+  const openBookDetails = (_book: Book) => {
+    // Implementar lógica de visualização
+  };
 
   return (
     <Table.Root>
@@ -33,7 +39,6 @@ export function RecentBooks({ showAll = false }: RecentBooksProps) {
             <Table.Cell>{book.title}</Table.Cell>
             <Table.Cell>{book.author}</Table.Cell>
             <Table.Cell>{book.genre}</Table.Cell>
-            <Table.Cell>{book.isRead ? "Lido" : "Não lido"}</Table.Cell>
             <Table.Cell>
               <S.ActionButtons>
                 <Button

@@ -7,7 +7,6 @@ export const ModalContent = styled(BaseModalContent)`
   max-width: 400px;
 
   [data-radix-dialog-title] {
-    color: ${colors.text};
     margin-bottom: 24px;
     font-size: 18px;
     font-weight: 600;
@@ -25,7 +24,6 @@ export const Header = styled.div`
   }
 
   [data-radix-dialog-title] {
-    color: ${colors.text};
     font-size: 18px;
     font-weight: 600;
   }

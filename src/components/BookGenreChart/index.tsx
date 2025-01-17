@@ -14,7 +14,6 @@ import {
   Legend,
   Cell,
 } from "recharts";
-import { books } from "../../data/mockup";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -37,7 +36,9 @@ const genreData = [
 
 export function BookGenreChart() {
   return (
-    <S.ChartGrid>  <S.ChartCard>
+    <S.ChartGrid>
+      {" "}
+      <S.ChartCard>
         <Text size="3" weight="bold" mb="4">
           Distribuição por Gênero
         </Text>
@@ -51,18 +52,22 @@ export function BookGenreChart() {
             fill="#8884d8"
             dataKey="count"
             nameKey="genre"
-            label={({ name, percent }) => 
+            label={({ name, percent }) =>
               `${name} ${(percent * 100).toFixed(0)}%`
             }
           >
-            {genreData.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            {genreData.map((_, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
             ))}
           </Pie>
           <Tooltip />
           <Legend />
         </PieChart>
-      </S.ChartCard>  <S.ChartCard>
+      </S.ChartCard>{" "}
+      <S.ChartCard>
         <Text size="3" weight="bold" mb="4">
           Livros por Gênero
         </Text>
@@ -75,7 +80,6 @@ export function BookGenreChart() {
           <Bar dataKey="count" fill="#82ca9d" />
         </BarChart>
       </S.ChartCard>
-
       <S.ChartCard>
         <Text size="3" weight="bold" mb="4">
           Livros Adicionados por Mês
@@ -94,9 +98,6 @@ export function BookGenreChart() {
           />
         </LineChart>
       </S.ChartCard>
-
-    
-    
     </S.ChartGrid>
   );
 }

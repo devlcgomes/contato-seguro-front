@@ -1,10 +1,5 @@
 import { Button, Text } from "@radix-ui/themes";
-import {
-  MagnifyingGlass,
-  Plus,
-  PencilSimple,
-  Trash,
-} from "@phosphor-icons/react";
+import { MagnifyingGlass, Plus, Trash } from "@phosphor-icons/react";
 import * as S from "./booksScreen.styles";
 import { useBooks } from "./hooks/useBooks";
 import { AddBookModal } from "../../components/AddBookModal";
@@ -19,7 +14,6 @@ function BooksScreen() {
     handleSearch,
     handleAddBook,
     addBook,
-    handleEditBook,
     handleDeleteBook,
   } = useBooks();
 
@@ -95,9 +89,6 @@ function BooksScreen() {
                   <S.Td>{book.status === "read" ? "Lido" : "Não lido"}</S.Td>
                   <S.Td>
                     <S.ActionsContainer>
-                      <S.ActionButton onClick={() => handleEditBook(book.id)}>
-                        <PencilSimple size={20} />
-                      </S.ActionButton>
                       <S.ActionButton onClick={() => handleDeleteBook(book.id)}>
                         <Trash size={20} />
                       </S.ActionButton>

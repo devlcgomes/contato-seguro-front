@@ -31,7 +31,7 @@ export function AddBookModal({
 
   const handleAuthorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedAuthor = authors.find(
-      (author) => author.id === e.target.value
+      (author) => author.id === Number(e.target.value)
     );
 
     setFormData({

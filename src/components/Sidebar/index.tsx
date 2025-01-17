@@ -1,7 +1,7 @@
 import { Text } from "@radix-ui/themes";
 import * as S from "./styles";
 import logoBook from "../../assets/logoBook.png";
-import { House, Books, Users, FolderOpen, Gear } from "@phosphor-icons/react";
+import { House, Books, Users, Gear, SignOut } from "@phosphor-icons/react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export function Sidebar() {
@@ -33,9 +33,19 @@ export function Sidebar() {
           <Users size={20} />
           <Text>Autores</Text>
         </S.MenuItem>
-        <S.MenuItem>
+        <S.MenuItem
+          active={location.pathname === "/settings"}
+          onClick={() => navigate("/settings")}
+        >
           <Gear size={20} />
-          <Text>Settings</Text>
+          <Text>Configurações</Text>
+        </S.MenuItem>
+        <S.MenuItem
+          active={location.pathname === "/"}
+          onClick={() => navigate("/")}
+        >
+          <SignOut size={20} />
+          <Text>Sair</Text>
         </S.MenuItem>
       </S.NavMenu>
     </S.SidebarContainer>
