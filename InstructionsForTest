@@ -14,15 +14,15 @@ Um livro tem as seguintes propriedades:
   author_id (obrigatório)
   pages (opcional)
   Autor
+
   Um autor tem as seguintes propriedades:
--
--
+
 - id (obrigatório)
   name (obrigatório)
   email (opcional)
+
   Funcionalidades
--
--
+
 - -Criar um livro (modal)
   Visualizar todos os livros (tabela)
   Visualizar um livro específico (modal)
