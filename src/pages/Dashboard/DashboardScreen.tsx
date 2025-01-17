@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Flex, Text, Button } from "@radix-ui/themes";
+import { Flex, Text, Button } from "@radix-ui/themes";
 import {
   PieChart,
   Pie,
@@ -22,14 +22,8 @@ import { Plus, Eye, Trash } from "@phosphor-icons/react";
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const DashboardScreen: React.FC = () => {
-  const {
-    booksByGenre,
-    booksByAuthor,
-    totalBooks,
-    totalAuthors,
-    monthlyBooks,
-    recentBooks,
-  } = useStatistics();
+  const { booksByGenre, totalBooks, totalAuthors, monthlyBooks, recentBooks } =
+    useStatistics();
 
   return (
     <S.DashboardContainer>
@@ -116,7 +110,7 @@ const DashboardScreen: React.FC = () => {
                   outerRadius={70}
                   label
                 >
-                  {booksByGenre.map((entry, index) => (
+                  {booksByGenre.map((_, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}

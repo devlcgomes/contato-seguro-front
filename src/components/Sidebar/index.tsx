@@ -1,14 +1,7 @@
 import { Text } from "@radix-ui/themes";
 import * as S from "./styles";
 import logoBook from "../../assets/logoBook.png";
-import {
-  House,
-  Books,
-  Users,
-  FolderOpen,
-  Gear,
-  SignOut,
-} from "@phosphor-icons/react";
+import { House, Books, Users, Gear, SignOut } from "@phosphor-icons/react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export function Sidebar() {

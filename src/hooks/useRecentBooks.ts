@@ -15,7 +15,16 @@ export function useRecentBooks() {
 
   useEffect(() => {
     // Atualiza os livros recentes sempre que books mudar
-    const sortedBooks = [...books].reverse().slice(0, 5);
+    const sortedBooks = [...books]
+      .reverse()
+      .slice(0, 5)
+      .map((book) => ({
+        id: Number(book.id),
+        title: book.title,
+        authorName: book.author,
+        genre: book.genre,
+        pages: book.pages,
+      }));
     setRecentBooks(sortedBooks);
   }, [books]); // Dependência no array faz o efeito rodar quando books mudar
 

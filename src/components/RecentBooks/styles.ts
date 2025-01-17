@@ -16,14 +16,12 @@ export const Table = styled.table`
     padding: 16px;
     font-size: 14px;
     font-weight: 500;
-    color: ${colors.text};
     border-bottom: 1px solid #e2e8f0;
   }
 
   td {
     padding: 16px;
     font-size: 14px;
-    color: ${colors.text};
     border-bottom: 1px solid #e2e8f0;
 
     .book-info {
@@ -77,4 +75,12 @@ export const ActionButtons = styled.div`
       opacity: 0.8;
     }
   }
+`;
+
+export const Title = styled.h2`
+  color: #333;
+`;
+
+export const Description = styled.p`
+  color: #666;
 `;

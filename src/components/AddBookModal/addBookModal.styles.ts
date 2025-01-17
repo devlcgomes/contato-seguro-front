@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { colors } from "../../theme/colors";
-import { Dialog } from "@radix-ui/themes";
 import { BaseModalContent } from "../../styles/modal.styles";
 
 export const FormContainer = styled.form`
@@ -23,7 +22,6 @@ export const InputWrapper = styled.div`
   label {
     font-size: 14px;
     font-weight: 500;
-    color: ${colors.text};
   }
 
   input,
@@ -35,7 +33,6 @@ export const InputWrapper = styled.div`
     font-size: 14px;
     transition: all 0.2s;
     background-color: white;
-    color: ${colors.text};
 
     &:focus {
       outline: none;
@@ -57,7 +54,6 @@ export const InputWrapper = styled.div`
     padding-right: 40px;
 
     option {
-      color: ${colors.text};
       background: white;
       padding: 12px 16px;
       font-size: 14px;
@@ -79,7 +75,6 @@ export const ModalContent = styled(BaseModalContent)`
   max-width: 500px;
 
   [data-radix-dialog-title] {
-    color: ${colors.text};
     margin-bottom: 24px;
     font-size: 20px;
     font-weight: 600;
