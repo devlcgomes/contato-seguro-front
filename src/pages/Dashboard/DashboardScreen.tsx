@@ -17,9 +17,9 @@ import {
 } from "recharts";
 import { useStatistics } from "../../hooks/useStatistics";
 import * as S from "./dashboard.styles";
-import { MagnifyingGlass, Plus } from "@phosphor-icons/react";
+import { Plus, Eye, Trash } from "@phosphor-icons/react";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const DashboardScreen: React.FC = () => {
   const {
@@ -29,7 +29,6 @@ const DashboardScreen: React.FC = () => {
     totalAuthors,
     monthlyBooks,
     recentBooks,
-    recentAuthors,
   } = useStatistics();
 
   return (
@@ -37,17 +36,18 @@ const DashboardScreen: React.FC = () => {
       <S.MainContent>
         <S.Header>
           <Text size="5" weight="bold">
-            My Books
+            Meus Livros
           </Text>
-          <S.SearchContainer>
-            <Flex gap="3" align="center">
-              <S.SearchInput type="text" placeholder="Search" />
-              <Button variant="solid">
-                <Plus />
-                Add New
-              </Button>
-            </Flex>
-          </S.SearchContainer>
+          <Flex gap="3">
+            <Button color="orange" size="3" variant="solid">
+              <Plus />
+              Adicionar novo livro
+            </Button>
+            <Button color="orange" size="3" variant="solid">
+              <Plus />
+              Adicionar autor
+            </Button>
+          </Flex>
         </S.Header>
 
         <S.StatsGrid>
@@ -55,74 +55,55 @@ const DashboardScreen: React.FC = () => {
             <S.IconWrapper variant="blue">
               <S.BookIcon weight="fill" />
             </S.IconWrapper>
-            <Box>
-              <Text size="5" weight="bold">
-                {totalBooks}
-              </Text>
-              <Text color="gray" size="2">
-                Total Books
-              </Text>
+            <S.StatContent>
+              <S.StatValue>{totalBooks}</S.StatValue>
+              <S.StatLabel>Total Books</S.StatLabel>
               <S.GrowthIndicator positive>
                 +12% from last month
               </S.GrowthIndicator>
-            </Box>
+            </S.StatContent>
           </S.StatCard>
 
           <S.StatCard>
             <S.IconWrapper variant="green">
               <S.AuthorIcon weight="fill" />
             </S.IconWrapper>
-            <Box>
-              <Text size="5" weight="bold">
-                {totalAuthors}
-              </Text>
-              <Text color="gray" size="2">
-                Authors
-              </Text>
+            <S.StatContent>
+              <S.StatValue>{totalAuthors}</S.StatValue>
+              <S.StatLabel>Authors</S.StatLabel>
               <S.GrowthIndicator positive>
                 +5% from last month
               </S.GrowthIndicator>
-            </Box>
+            </S.StatContent>
           </S.StatCard>
 
           <S.StatCard>
             <S.IconWrapper variant="purple">
               <S.GenreIcon weight="fill" />
             </S.IconWrapper>
-            <Box>
-              <Text size="5" weight="bold">
-                {booksByGenre.length}
-              </Text>
-              <Text color="gray" size="2">
-                Genres
-              </Text>
-              <Text color="gray" size="2">
-                Same as last month
-              </Text>
-            </Box>
+            <S.StatContent>
+              <S.StatValue>{booksByGenre.length}</S.StatValue>
+              <S.StatLabel>Genres</S.StatLabel>
+              <S.StatLabel>Same as last month</S.StatLabel>
+            </S.StatContent>
           </S.StatCard>
 
           <S.StatCard>
             <S.IconWrapper variant="orange">
               <S.RecentIcon weight="fill" />
             </S.IconWrapper>
-            <Box>
-              <Text size="5" weight="bold">
-                8
-              </Text>
-              <Text color="gray" size="2">
-                Recent Added
-              </Text>
+            <S.StatContent>
+              <S.StatValue>8</S.StatValue>
+              <S.StatLabel>Recent Added</S.StatLabel>
               <S.GrowthIndicator positive>+3 this week</S.GrowthIndicator>
-            </Box>
+            </S.StatContent>
           </S.StatCard>
         </S.StatsGrid>
 
         <S.ChartsGrid>
-          {/* Gráfico de Gêneros */}
           <S.ChartCard>
-            <Text size="5" weight="bold" mb="4">
-              Books by Genre
+            <Text size="4" weight="bold" mb="4">
+              Distribuição por Gênero
             </Text>
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
@@ -148,26 +129,24 @@ const DashboardScreen: React.FC = () => {
             </ResponsiveContainer>
           </S.ChartCard>
 
-          {/* Gráfico de Autores */}
           <S.ChartCard>
-            <Text size="5" weight="bold" mb="4">
-              Top Authors
+            <Text size="4" weight="bold" mb="4">
+              Livros por Gênero
             </Text>
             <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={booksByAuthor.slice(0, 5)}>
+              <BarChart data={booksByGenre}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="value" fill="#8884d8" />
+                <Bar dataKey="value" fill="#4CAF50" />
               </BarChart>
             </ResponsiveContainer>
           </S.ChartCard>
 
-          {/* Gráfico de Tendência */}
           <S.ChartCard>
-            <Text size="5" weight="bold" mb="4">
-              Books Added Over Time
+            <Text size="4" weight="bold" mb="4">
+              Livros Adicionados por Mês
             </Text>
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={monthlyBooks}>
@@ -180,77 +159,47 @@ const DashboardScreen: React.FC = () => {
                   dataKey="value"
                   stroke="#8884d8"
                   strokeWidth={2}
+                  dot={{ fill: "#8884d8" }}
                 />
               </LineChart>
             </ResponsiveContainer>
           </S.ChartCard>
         </S.ChartsGrid>
 
-        <S.TablesGrid>
-          {/* Tabela de Livros Recentes */}
-          <S.TableCard>
-            <Text size="5" weight="bold" mb="4">
-              Recent Books
-            </Text>
-            <S.Table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Author</th>
-                  <th>Pages</th>
-                  <th>Added Date</th>
+        <S.TableCard>
+          <Text size="4" weight="bold" mb="4">
+            Livros Recentes
+          </Text>
+          <S.Table>
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Gênero</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentBooks.map((book) => (
+                <tr key={book.id}>
+                  <td>{book.title}</td>
+                  <td>{book.authorName}</td>
+                  <td>{book.genre}</td>
+                  <td>
+                    <S.ActionButtons>
+                      <S.ActionButton title="View">
+                        <Eye size={20} />
+                      </S.ActionButton>
+                      <S.ActionButton title="Delete" variant="danger">
+                        <Trash size={20} />
+                      </S.ActionButton>
+                    </S.ActionButtons>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {recentBooks.map((book) => (
-                  <tr key={book.id}>
-                    <td>{book.name}</td>
-                    <td>{book.authorName}</td>
-                    <td>{book.pages}</td>
-                    <td>
-                      {new Date(book.addedDate).toLocaleDateString("pt-BR", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </S.Table>
-          </S.TableCard>
-
-          {/* Tabela de Autores Recentes */}
-          <S.TableCard>
-            <Text size="5" weight="bold" mb="4">
-              Recent Authors
-            </Text>
-            <S.Table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Books</th>
-                  <th>Added Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentAuthors.map((author) => (
-                  <tr key={author.id}>
-                    <td>{author.name}</td>
-                    <td>{author.booksCount}</td>
-                    <td>
-                      {new Date(author.addedDate).toLocaleDateString("pt-BR", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </S.Table>
-          </S.TableCard>
-        </S.TablesGrid>
+              ))}
+            </tbody>
+          </S.Table>
+        </S.TableCard>
       </S.MainContent>
     </S.DashboardContainer>
   );

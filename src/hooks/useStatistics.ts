@@ -66,6 +66,7 @@ export const useStatistics = () => {
       .slice(0, 5)
       .map((book) => ({
         ...book,
+        name: book.title,
         authorName:
           authors.find((author) => author.id === book.authorId)?.name ||
           "Desconhecido",

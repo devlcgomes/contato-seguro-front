@@ -45,16 +45,39 @@ export const StatsGrid = styled.div`
 
 export const StatCard = styled.div`
   background: var(--color-background-light);
-  padding: 24px;
-  border-radius: 8px;
+  padding: 20px;
+  border-radius: 10px;
   display: flex;
   gap: 16px;
   align-items: flex-start;
   transition: transform 0.2s ease-in-out;
+  border: 1px solid var(--gray-4);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 
   &:hover {
     transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
+`;
+
+export const StatContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const StatValue = styled.div`
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 1;
+  color: var(--gray-12);
+  margin-bottom: 4px;
+`;
+
+export const StatLabel = styled.div`
+  font-size: 14px;
+  color: var(--gray-11);
+  margin-bottom: 4px;
 `;
 
 interface IconWrapperProps {
@@ -62,9 +85,9 @@ interface IconWrapperProps {
 }
 
 export const IconWrapper = styled.div<IconWrapperProps>`
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,9 +128,20 @@ export const IconWrapper = styled.div<IconWrapperProps>`
 
 export const GrowthIndicator = styled.span<{ positive: boolean }>`
   color: ${(props) => (props.positive ? "var(--green-9)" : "var(--red-9)")};
-  font-size: 12px;
-  display: block;
-  margin-top: 4px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: ${(props) =>
+      props.positive ? "var(--green-9)" : "var(--red-9)"};
+  }
 `;
 
 export const AnalyticsSection = styled.section`
@@ -171,15 +205,40 @@ export const ChartCard = styled.div<{ fullWidth?: boolean }>`
   border-radius: 8px;
 `;
 
-export const TablesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  margin-bottom: 32px;
+export const ActionButtons = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`;
+
+interface ActionButtonProps {
+  variant?: "danger";
+}
+
+export const ActionButton = styled.button<ActionButtonProps>`
+  background: none;
+  border: none;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${(props) =>
+    props.variant === "danger" ? "var(--red-9)" : "var(--gray-11)"};
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background: ${(props) =>
+      props.variant === "danger" ? "var(--red-3)" : "var(--gray-3)"};
+    color: ${(props) =>
+      props.variant === "danger" ? "var(--red-11)" : "var(--gray-12)"};
+  }
 `;
 
 export const TableCard = styled.div`
   background: var(--color-background-light);
   padding: 24px;
   border-radius: 8px;
+  margin-bottom: 32px;
 `;
