@@ -1,33 +1,50 @@
 import { Button, Text } from "@radix-ui/themes";
+import {
+  MagnifyingGlass,
+  Plus,
+  PencilSimple,
+  Trash,
+} from "@phosphor-icons/react";
 import * as S from "./booksScreen.styles";
-import { BookOpenUser, MagnifyingGlass } from "@phosphor-icons/react";
-import { useBooks } from "../../hooks/useBooks";
+import { useBooks } from "./hooks/useBooks";
 import { AddBookModal } from "../../components/AddBookModal";
-import { RecentBooks } from "../../components/RecentBooks";
 
 export default function BooksScreen() {
-  const { books, isModalOpen, setIsModalOpen, addBook } = useBooks();
+  const {
+    books,
+    searchTerm,
+    filteredBooks,
+    isModalOpen,
+    setIsModalOpen,
+    handleSearch,
+    handleAddBook,
+    addBook,
+    handleEditBook,
+    handleDeleteBook,
+  } = useBooks();
 
   return (
-    <S.ContentArea>
-      <S.TopSection>
+    <S.Container>
+      <S.Header>
         <Text size="6" weight="bold">
           Biblioteca
         </Text>
-        <Button color="orange" size="3" onClick={() => setIsModalOpen(true)}>
+        <Button size="3" color="orange" onClick={handleAddBook}>
+          <Plus size={20} />
           Adicionar novo livro
-          <BookOpenUser />
         </Button>
-      </S.TopSection>
+      </S.Header>
 
       <S.FilterSection>
-        <S.SearchInput>
-          <MagnifyingGlass size={20} />
-          <input
+        <S.SearchContainer>
+          <MagnifyingGlass size={20} color="#666" />
+          <S.SearchInput
             type="text"
             placeholder="Buscar por título, autor ou gênero..."
+            value={searchTerm}
+            onChange={handleSearch}
           />
-        </S.SearchInput>
+        </S.SearchContainer>
         <S.FilterButtons>
           <Button color="gray" variant="soft">
             Todos
@@ -44,16 +61,61 @@ export default function BooksScreen() {
         </S.FilterButtons>
       </S.FilterSection>
 
-      <S.TableSection>
-        <RecentBooks showAll />
-      </S.TableSection>
+      {books.length === 0 ? (
+        <S.EmptyState>
+          <S.EmptyStateTitle>Nenhum livro cadastrado</S.EmptyStateTitle>
+          <S.EmptyStateDescription>
+            Você ainda não possui nenhum livro cadastrado no sistema.
+          </S.EmptyStateDescription>
+          <Button size="3" color="orange" onClick={handleAddBook}>
+            <Plus size={20} />
+            Cadastrar Primeiro Livro
+          </Button>
+        </S.EmptyState>
+      ) : (
+        <S.TableContainer>
+          <S.Table>
+            <thead>
+              <tr>
+                <S.Th>Título</S.Th>
+                <S.Th>Autor</S.Th>
+                <S.Th>Gênero</S.Th>
+                <S.Th>Páginas</S.Th>
+                <S.Th>Status</S.Th>
+                <S.Th>Ações</S.Th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredBooks.map((book) => (
+                <tr key={book.id}>
+                  <S.Td>{book.title}</S.Td>
+                  <S.Td>{book.author}</S.Td>
+                  <S.Td>{book.genre}</S.Td>
+                  <S.Td>{book.pages}</S.Td>
+                  <S.Td>{book.status === "read" ? "Lido" : "Não lido"}</S.Td>
+                  <S.Td>
+                    <S.ActionsContainer>
+                      <S.ActionButton onClick={() => handleEditBook(book.id)}>
+                        <PencilSimple size={20} />
+                      </S.ActionButton>
+                      <S.ActionButton onClick={() => handleDeleteBook(book.id)}>
+                        <Trash size={20} />
+                      </S.ActionButton>
+                    </S.ActionsContainer>
+                  </S.Td>
+                </tr>
+              ))}
+            </tbody>
+          </S.Table>
+        </S.TableContainer>
+      )}
 
       <AddBookModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAddBook={addBook}
       />
-    </S.ContentArea>
+    </S.Container>
   );
 }
 

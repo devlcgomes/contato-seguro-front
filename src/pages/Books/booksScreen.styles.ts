@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import { colors } from "../../theme/colors";
 
-export const ContentArea = styled.div`
+export const Container = styled.div`
   padding: 20px;
 `;
 
-export const TopSection = styled.div`
+export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -19,30 +18,22 @@ export const FilterSection = styled.div`
   margin-bottom: 24px;
 `;
 
-export const SearchInput = styled.div`
+export const SearchContainer = styled.div`
   display: flex;
+  gap: 16px;
   align-items: center;
-  gap: 8px;
-  background: white;
+`;
+
+export const SearchInput = styled.input`
   padding: 8px 16px;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 400px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 300px;
+  font-size: 14px;
 
-  input {
-    border: none;
+  &:focus {
     outline: none;
-    width: 100%;
-    font-size: 14px;
-
-    &::placeholder {
-      color: #999;
-    }
-  }
-
-  svg {
-    color: #999;
+    border-color: #f97316;
   }
 `;
 
@@ -52,9 +43,69 @@ export const FilterButtons = styled.div`
   flex-wrap: wrap;
 `;
 
-export const TableSection = styled.div`
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+export const TableContainer = styled.div`
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+export const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+`;
+
+export const Th = styled.th`
+  text-align: left;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+  color: #666;
+  font-weight: 600;
+`;
+
+export const Td = styled.td`
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+  color: #333;
+`;
+
+export const ActionButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
+
+export const ActionsContainer = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+export const EmptyState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+`;
+
+export const EmptyStateTitle = styled.h2`
+  color: #666;
+  font-size: 20px;
+  margin-bottom: 8px;
+`;
+
+export const EmptyStateDescription = styled.p`
+  color: #888;
+  font-size: 16px;
+  margin-bottom: 24px;
 `;

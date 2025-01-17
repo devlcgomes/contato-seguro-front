@@ -1,78 +1,52 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useLocalStorage } from "./useLocalStorage";
 
 interface Book {
-  id: number;
+  id: string;
   title: string;
-  authorId: number;
-  authorName: string;
+  author: string;
   genre: string;
   pages: number;
+  status: "read" | "unread";
 }
 
 export function useBooks() {
-  const [books, setBooks] = useState<Book[]>([]);
+  const [books, setBooks] = useLocalStorage<Book[]>("books", []);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [bookToDelete, setBookToDelete] = useState<number | null>(null);
 
-  // Carrega os livros iniciais
-  useEffect(() => {
-    const storedBooks = localStorage.getItem("books");
-    if (storedBooks) {
-      setBooks(JSON.parse(storedBooks));
-    } else {
-      import("../data/mockup").then(({ books: mockBooks }) => {
-        setBooks(mockBooks);
-        localStorage.setItem("books", JSON.stringify(mockBooks));
-      });
-    }
-  }, []);
-
-  const addBook = (newBook: Omit<Book, "id">) => {
-    const book = {
-      ...newBook,
-      id: books.length + 1,
+  const addBook = (bookData: Omit<Book, "id" | "status">) => {
+    const newBook: Book = {
+      id: String(Math.random()),
+      ...bookData,
+      status: "unread",
     };
-
-    const updatedBooks = [...books, book];
-    setBooks(updatedBooks);
-    localStorage.setItem("books", JSON.stringify(updatedBooks));
+    setBooks([...books, newBook]);
+    setIsModalOpen(false);
   };
 
-  const handleDeleteBook = (bookId: number) => {
-    setBookToDelete(bookId);
-    setIsDeleteModalOpen(true);
+  const toggleBookStatus = (bookId: string) => {
+    setBooks(
+      books.map((book) =>
+        book.id === bookId
+          ? {
+              ...book,
+              status: book.status === "read" ? "unread" : "read",
+            }
+          : book
+      )
+    );
   };
 
-  const confirmDelete = () => {
-    if (bookToDelete) {
-      const updatedBooks = books.filter((book) => book.id !== bookToDelete);
-      setBooks(updatedBooks); // Atualiza o estado
-      localStorage.setItem("books", JSON.stringify(updatedBooks)); // Atualiza o localStorage
-      setIsDeleteModalOpen(false);
-      setBookToDelete(null);
-    }
-  };
-
-  const openBookDetails = (book: Book) => {
-    setSelectedBook(book);
-    setIsDetailsModalOpen(true);
+  const deleteBook = (bookId: string) => {
+    setBooks(books.filter((book) => book.id !== bookId));
   };
 
   return {
     books,
-    selectedBook,
     isModalOpen,
-    isDetailsModalOpen,
-    isDeleteModalOpen,
     setIsModalOpen,
-    setIsDetailsModalOpen,
-    setIsDeleteModalOpen,
     addBook,
-    handleDeleteBook,
-    confirmDelete,
-    openBookDetails,
+    toggleBookStatus,
+    deleteBook,
   };
 }
