@@ -9,7 +9,7 @@ import * as S from "./booksScreen.styles";
 import { useBooks } from "./hooks/useBooks";
 import { AddBookModal } from "../../components/AddBookModal";
 
-export default function BooksScreen() {
+function BooksScreen() {
   const {
     books,
     searchTerm,

@@ -27,7 +27,7 @@ export function useAuthors() {
 
   const addAuthor = (authorData: { name: string; email: string }) => {
     const newAuthor: Author = {
-      id: String(Math.random()),
+      id: crypto.randomUUID(),
       name: authorData.name,
       email: authorData.email,
       booksCount: 0,

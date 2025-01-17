@@ -8,7 +8,7 @@ interface AddBookModalProps {
   onClose: () => void;
   onAddBook: (book: {
     title: string;
-    authorId: number;
+    authorId: string;
     authorName: string;
     genre: string;
     pages: number;
@@ -31,7 +31,7 @@ export function AddBookModal({
 
   const handleAuthorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedAuthor = authors.find(
-      (author) => author.id === Number(e.target.value)
+      (author) => author.id === e.target.value
     );
 
     setFormData({
@@ -45,7 +45,7 @@ export function AddBookModal({
     e.preventDefault();
     onAddBook({
       ...formData,
-      authorId: Number(formData.authorId),
+      authorId: formData.authorId,
       pages: Number(formData.pages),
     });
     setFormData({

@@ -5,9 +5,18 @@ interface Book {
   id: string;
   title: string;
   author: string;
+  authorId: string;
   genre: string;
   pages: number;
   status: "read" | "unread";
+}
+
+interface AddBookData {
+  title: string;
+  authorName: string;
+  authorId: string;
+  genre: string;
+  pages: number;
 }
 
 export function useBooks() {
@@ -30,13 +39,18 @@ export function useBooks() {
     setIsModalOpen(true);
   };
 
-  const addBook = (bookData: Omit<Book, "id" | "status">) => {
+  const addBook = (bookData: AddBookData) => {
     const newBook: Book = {
-      id: String(Math.random()),
-      ...bookData,
+      id: crypto.randomUUID(),
+      title: bookData.title,
+      author: bookData.authorName,
+      authorId: bookData.authorId,
+      genre: bookData.genre,
+      pages: bookData.pages,
       status: "unread",
     };
     setBooks([...books, newBook]);
+    setIsModalOpen(false);
   };
 
   const handleEditBook = (id: string) => {
