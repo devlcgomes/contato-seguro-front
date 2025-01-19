@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
 
 interface Book {
@@ -31,15 +31,15 @@ export function useBooks() {
       book.genre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
-  };
+  }, []);
 
-  const handleAddBook = () => {
+  const handleAddBook = useCallback(() => {
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const addBook = (bookData: AddBookData) => {
+  const addBook = useCallback((bookData: AddBookData) => {
     const newBook: Book = {
       id: crypto.randomUUID(),
       title: bookData.title,
@@ -49,13 +49,17 @@ export function useBooks() {
       pages: bookData.pages,
       status: "unread",
     };
-    setBooks([...books, newBook]);
-    setIsModalOpen(false);
-  };
+    
+    setBooks((prevBooks) => [...prevBooks, newBook]);
+  }, [setBooks]);
 
-  const handleDeleteBook = (id: string) => {
-    setBooks(books.filter((book) => book.id !== id));
-  };
+  const handleDeleteBook = useCallback((id: string) => {
+    setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
+  }, [setBooks]);
+
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+  }, []);
 
   return {
     books,
@@ -67,5 +71,6 @@ export function useBooks() {
     handleAddBook,
     addBook,
     handleDeleteBook,
+    handleCloseModal,
   };
 }

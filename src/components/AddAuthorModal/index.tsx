@@ -1,7 +1,7 @@
-import { Button, Dialog, Flex, Text } from "@radix-ui/themes";
+import { useState, useEffect, ChangeEvent } from "react";
+import { Button } from "@radix-ui/themes";
 import { X } from "@phosphor-icons/react";
 import * as S from "./addAuthorModal.styles";
-import { useState, ChangeEvent } from "react";
 
 interface AddAuthorModalProps {
   isOpen: boolean;
@@ -14,8 +14,20 @@ export function AddAuthorModal({
   onClose,
   onAddAuthor,
 }: AddAuthorModalProps) {
+  const [isVisible, setIsVisible] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsVisible(true);
+    } else {
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,24 +45,23 @@ export function AddAuthorModal({
     setEmail(e.target.value);
   };
 
+  if (!isVisible && !isOpen) return null;
+
   return (
-    <Dialog.Root open={isOpen} onOpenChange={onClose}>
-      <Dialog.Content style={{ maxWidth: 450 }}>
+    <>
+      <S.Overlay className={isOpen ? "open" : ""} onClick={onClose} />
+      <S.ModalContent className={isOpen ? "open" : ""}>
         <S.Header>
-          <Text size="5" weight="bold">
-            Adicionar novo autor
-          </Text>
+          <h2>Adicionar novo autor</h2>
           <Button variant="ghost" onClick={onClose}>
             <X size={24} />
           </Button>
         </S.Header>
 
         <form onSubmit={handleSubmit}>
-          <Flex direction="column" gap="4">
-            <Flex direction="column" gap="2">
-              <Text size="2" weight="bold">
-                Nome do autor
-              </Text>
+          <S.InputGroup>
+            <S.InputWrapper>
+              <label>Nome do autor</label>
               <S.Input
                 type="text"
                 placeholder="Digite o nome do autor"
@@ -58,12 +69,10 @@ export function AddAuthorModal({
                 onChange={handleNameChange}
                 required
               />
-            </Flex>
+            </S.InputWrapper>
 
-            <Flex direction="column" gap="2">
-              <Text size="2" weight="bold">
-                Email
-              </Text>
+            <S.InputWrapper>
+              <label>Email</label>
               <S.Input
                 type="email"
                 placeholder="Digite o email do autor"
@@ -71,19 +80,19 @@ export function AddAuthorModal({
                 onChange={handleEmailChange}
                 required
               />
-            </Flex>
+            </S.InputWrapper>
+          </S.InputGroup>
 
-            <Flex gap="3" mt="4" justify="end">
-              <Button variant="soft" color="gray" onClick={onClose}>
-                Cancelar
-              </Button>
-              <Button type="submit" color="orange">
-                Adicionar autor
-              </Button>
-            </Flex>
-          </Flex>
+          <S.ButtonsContainer>
+            <Button variant="soft" color="gray" onClick={onClose}>
+              Cancelar
+            </Button>
+            <Button type="submit" color="orange">
+              Adicionar autor
+            </Button>
+          </S.ButtonsContainer>
         </form>
-      </Dialog.Content>
-    </Dialog.Root>
+      </S.ModalContent>
+    </>
   );
 }

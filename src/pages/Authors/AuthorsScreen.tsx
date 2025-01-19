@@ -14,36 +14,24 @@ import {
   EmptyStateTitle,
   EmptyStateDescription,
 } from "./authors.styles";
-import { useAuthors } from "./hooks/useAuthors";
+import { useAuthors } from "../../hooks/useAuthors";
 import { Button } from "@radix-ui/themes";
 import { AddAuthorModal } from "../../components/AddAuthorModal";
+import { memo } from "react";
 
-export default function AuthorsScreen() {
+const AuthorsScreen = memo(function AuthorsScreen() {
   const {
     authors,
-    searchTerm,
-    filteredAuthors,
-    isModalOpen,
-    setIsModalOpen,
-    handleSearch,
-    handleAddAuthor,
+    isAuthorModalOpen,
+    handleOpenModal,
+    handleCloseModal,
     addAuthor,
-    handleDeleteAuthor,
   } = useAuthors();
 
   return (
     <Container>
       <Header>
-        <SearchContainer>
-          <MagnifyingGlass size={20} color="#666" />
-          <SearchInput
-            type="text"
-            placeholder="Buscar autores..."
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-        </SearchContainer>
-        <Button size="3" color="orange" onClick={handleAddAuthor}>
+        <Button size="3" color="orange" onClick={handleOpenModal}>
           <Plus size={20} />
           Adicionar Autor
         </Button>
@@ -55,7 +43,7 @@ export default function AuthorsScreen() {
           <EmptyStateDescription>
             Você ainda não possui nenhum autor cadastrado no sistema.
           </EmptyStateDescription>
-          <Button size="3" color="orange" onClick={handleAddAuthor}>
+          <Button size="3" color="orange" onClick={handleOpenModal}>
             <Plus size={20} />
             Cadastrar Primeiro Autor
           </Button>
@@ -72,20 +60,14 @@ export default function AuthorsScreen() {
               </tr>
             </thead>
             <tbody>
-              {filteredAuthors.map((author) => (
+              {authors.map((author) => (
                 <tr key={author.id}>
                   <Td>{author.name}</Td>
                   <Td>{author.email}</Td>
-                  <Td>{author.booksCount}</Td>
+                  <Td>{0}</Td>
                   <Td>
                     <ActionsContainer>
-                      {/* Remover ou comentar este botão por enquanto */}
-                      {/*<ActionButton onClick={() => handleEditAuthor(author.id)}>
-                        <PencilSimple size={20} />
-                      </ActionButton>*/}
-                      <ActionButton
-                        onClick={() => handleDeleteAuthor(author.id)}
-                      >
+                      <ActionButton>
                         <Trash size={20} />
                       </ActionButton>
                     </ActionsContainer>
@@ -98,10 +80,12 @@ export default function AuthorsScreen() {
       )}
 
       <AddAuthorModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isAuthorModalOpen}
+        onClose={handleCloseModal}
         onAddAuthor={addAuthor}
       />
     </Container>
   );
-}
+});
+
+export { AuthorsScreen };

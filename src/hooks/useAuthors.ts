@@ -1,39 +1,38 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useLocalStorage } from "./useLocalStorage";
 
 interface Author {
   id: number;
   name: string;
-  birthDate: string;
-  nationality: string;
-  biography: string;
+  email: string;
 }
 
 export function useAuthors() {
-  const [authors, setAuthors] = useState<Author[]>([]);
+  const [authors, setAuthors] = useLocalStorage<Author[]>("authors", []);
   const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false);
 
-  useEffect(() => {
-    const storedAuthors = localStorage.getItem("authors");
-    if (storedAuthors) {
-      setAuthors(JSON.parse(storedAuthors));
-    }
-  }, []);
-
-  const addAuthor = (newAuthor: Omit<Author, "id">) => {
+  const addAuthor = useCallback((newAuthor: { name: string; email: string }) => {
     const author = {
       ...newAuthor,
-      id: authors.length + 1,
+      id: Date.now(), // Usando timestamp para garantir IDs únicos
     };
 
-    const updatedAuthors = [...authors, author];
-    setAuthors(updatedAuthors);
-    localStorage.setItem("authors", JSON.stringify(updatedAuthors));
-  };
+    setAuthors((prevAuthors) => [...prevAuthors, author]);
+  }, [setAuthors]);
+
+  const handleOpenModal = useCallback(() => {
+    setIsAuthorModalOpen(true);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setIsAuthorModalOpen(false);
+  }, []);
 
   return {
     authors,
     isAuthorModalOpen,
-    setIsAuthorModalOpen,
+    handleOpenModal,
+    handleCloseModal,
     addAuthor,
   };
 }

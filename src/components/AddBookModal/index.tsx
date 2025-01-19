@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Button, Dialog } from "@radix-ui/themes";
+import { useState, useEffect } from "react";
+import { Button } from "@radix-ui/themes";
 import * as S from "./addBookModal.styles";
 import { useAuthors } from "../../hooks/useAuthors";
 
@@ -21,6 +21,7 @@ export function AddBookModal({
   onAddBook,
 }: AddBookModalProps) {
   const { authors } = useAuthors();
+  const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     authorId: "",
@@ -28,6 +29,17 @@ export function AddBookModal({
     genre: "",
     pages: "",
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsVisible(true);
+    } else {
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
 
   const handleAuthorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedAuthor = authors.find(
@@ -58,10 +70,13 @@ export function AddBookModal({
     onClose();
   };
 
+  if (!isVisible && !isOpen) return null;
+
   return (
-    <Dialog.Root open={isOpen} onOpenChange={onClose}>
-      <S.ModalContent>
-        <Dialog.Title>Adicionar novo livro</Dialog.Title>
+    <>
+      <S.Overlay className={isOpen ? "open" : ""} onClick={onClose} />
+      <S.ModalContent className={isOpen ? "open" : ""}>
+        <h2>Adicionar novo livro</h2>
         <S.FormContainer onSubmit={handleSubmit}>
           <S.InputGroup>
             <S.InputWrapper>
@@ -132,6 +147,6 @@ export function AddBookModal({
           </S.ButtonsContainer>
         </S.FormContainer>
       </S.ModalContent>
-    </Dialog.Root>
+    </>
   );
 }

@@ -1,17 +1,113 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { colors } from "../../theme/colors";
 import { BaseModalContent } from "../../styles/modal.styles";
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+`;
+
+const slideIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+`;
+
+const slideOut = keyframes`
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+`;
+
+export const ModalContent = styled.div`
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 500px;
+  max-height: 85vh;
+  padding: 25px;
+  z-index: 1001;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+
+  &.open {
+    opacity: 1;
+    pointer-events: all;
+    animation: ${slideIn} 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  &:not(.open) {
+    animation: ${slideOut} 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+`;
+
+export const Overlay = styled.div`
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+
+  &.open {
+    opacity: 1;
+    pointer-events: all;
+    animation: ${fadeIn} 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  &:not(.open) {
+    animation: ${fadeOut} 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+`;
 
 export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
+  margin-top: 20px;
 `;
 
 export const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 `;
 
 export const InputWrapper = styled.div`
@@ -22,61 +118,26 @@ export const InputWrapper = styled.div`
   label {
     font-size: 14px;
     font-weight: 500;
+    color: #1a1a1a;
   }
 
-  input,
-  select {
-    height: 40px;
-    padding: 0 16px;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
+  input, select {
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
     font-size: 14px;
-    transition: all 0.2s;
-    background-color: white;
+    transition: border-color 0.2s;
 
     &:focus {
       outline: none;
-      border-color: ${colors.primary};
-      box-shadow: 0 0 0 1px ${colors.primary}40;
-    }
-
-    &::placeholder {
-      color: #94a3b8;
-    }
-  }
-
-  select {
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px center;
-    padding-right: 40px;
-
-    option {
-      background: white;
-      padding: 12px 16px;
-      font-size: 14px;
-    }
-
-    &:invalid {
-      color: #94a3b8;
+      border-color: #ff6b00;
     }
   }
 `;
 
 export const ButtonsContainer = styled.div`
   display: flex;
+  justify-content: flex-end;
   gap: 12px;
-  margin-top: 8px;
-`;
-
-export const ModalContent = styled(BaseModalContent)`
-  max-width: 500px;
-
-  [data-radix-dialog-title] {
-    margin-bottom: 24px;
-    font-size: 20px;
-    font-weight: 600;
-  }
+  margin-top: 24px;
 `;

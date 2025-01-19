@@ -3,18 +3,19 @@ import { MagnifyingGlass, Plus, Trash } from "@phosphor-icons/react";
 import * as S from "./booksScreen.styles";
 import { useBooks } from "./hooks/useBooks";
 import { AddBookModal } from "../../components/AddBookModal";
+import { memo } from "react";
 
-function BooksScreen() {
+const BooksScreen = memo(function BooksScreen() {
   const {
     books,
     searchTerm,
     filteredBooks,
     isModalOpen,
-    setIsModalOpen,
     handleSearch,
     handleAddBook,
     addBook,
     handleDeleteBook,
+    handleCloseModal,
   } = useBooks();
 
   return (
@@ -103,11 +104,11 @@ function BooksScreen() {
 
       <AddBookModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleCloseModal}
         onAddBook={addBook}
       />
     </S.Container>
   );
-}
+});
 
 export { BooksScreen };
