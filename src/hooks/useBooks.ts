@@ -5,19 +5,32 @@ interface Book {
   id: string;
   title: string;
   author: string;
+  authorId: string;
   genre: string;
   pages: number;
   status: "read" | "unread";
+}
+
+interface AddBookData {
+  title: string;
+  authorId: string;
+  authorName: string;
+  genre: string;
+  pages: number;
 }
 
 export function useBooks() {
   const [books, setBooks] = useLocalStorage<Book[]>("books", []);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const addBook = (bookData: Omit<Book, "id" | "status">) => {
+  const addBook = (bookData: AddBookData) => {
     const newBook: Book = {
       id: String(Math.random()),
-      ...bookData,
+      title: bookData.title,
+      author: bookData.authorName,
+      authorId: bookData.authorId,
+      genre: bookData.genre,
+      pages: bookData.pages,
       status: "unread",
     };
     setBooks([...books, newBook]);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Flex, Text, Button } from "@radix-ui/themes";
 import {
   PieChart,
@@ -18,12 +18,36 @@ import {
 import { useStatistics } from "../../hooks/useStatistics";
 import * as S from "./dashboard.styles";
 import { Plus, Eye, Trash } from "@phosphor-icons/react";
+import { AddBookModal } from "../../components/AddBookModal";
+import { AddAuthorModal } from "../../components/AddAuthorModal";
+import { useBooks } from "../../hooks/useBooks";
+import { useAuthors } from "../../hooks/useAuthors";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const DashboardScreen: React.FC = () => {
   const { booksByGenre, totalBooks, totalAuthors, monthlyBooks, recentBooks } =
     useStatistics();
+  const [isBookModalOpen, setIsBookModalOpen] = useState(false);
+  const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false);
+  const { addBook } = useBooks();
+  const { addAuthor } = useAuthors();
+
+  const handleOpenBookModal = () => {
+    setIsBookModalOpen(true);
+  };
+
+  const handleCloseBookModal = () => {
+    setIsBookModalOpen(false);
+  };
+
+  const handleOpenAuthorModal = () => {
+    setIsAuthorModalOpen(true);
+  };
+
+  const handleCloseAuthorModal = () => {
+    setIsAuthorModalOpen(false);
+  };
 
   return (
     <S.DashboardContainer>
@@ -33,11 +57,11 @@ const DashboardScreen: React.FC = () => {
             Meus Livros
           </Text>
           <Flex gap="3">
-            <Button color="orange" size="3" variant="solid">
+            <Button color="orange" size="3" variant="solid" onClick={handleOpenBookModal}>
               <Plus />
               Adicionar novo livro
             </Button>
-            <Button color="orange" size="3" variant="solid">
+            <Button color="orange" size="3" variant="solid" onClick={handleOpenAuthorModal}>
               <Plus />
               Adicionar autor
             </Button>
@@ -195,6 +219,18 @@ const DashboardScreen: React.FC = () => {
           </S.Table>
         </S.TableCard>
       </S.MainContent>
+
+      <AddBookModal
+        isOpen={isBookModalOpen}
+        onClose={handleCloseBookModal}
+        onAddBook={addBook}
+      />
+
+      <AddAuthorModal
+        isOpen={isAuthorModalOpen}
+        onClose={handleCloseAuthorModal}
+        onAddAuthor={addAuthor}
+      />
     </S.DashboardContainer>
   );
 };
