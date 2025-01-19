@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Button, Text, Checkbox, TextField } from "@radix-ui/themes";
 import * as S from "./login.styles";
-import loginImg from "../../assets/loginImg.png";
 import logoBook from "../../assets/logoBook.png";
 import { useNavigate } from "react-router-dom";
 
@@ -134,10 +133,6 @@ export default function LoginScreen() {
           </Text>
         </S.FormContainer>
       </S.LoginForm>
-
-      <S.WelcomeSection>
-        <img src={loginImg} alt="Welcome" width={600} />
-      </S.WelcomeSection>
     </S.LoginContainer>
   );
 }

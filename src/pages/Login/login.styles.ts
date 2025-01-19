@@ -6,26 +6,17 @@ export const LoginContainer = styled.div`
   display: flex;
   width: 100%;
   height: 100vh;
+  background-color: white;
 `;
 
 export const LoginForm = styled.div`
-  width: 50%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 2rem;
   background-color: white;
-`;
-
-export const WelcomeSection = styled.div`
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  padding: 2rem;
 `;
 
 export const Logo = styled.img`
