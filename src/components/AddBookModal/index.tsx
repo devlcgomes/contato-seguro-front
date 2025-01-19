@@ -77,75 +77,84 @@ export function AddBookModal({
       <S.Overlay className={isOpen ? "open" : ""} onClick={onClose} />
       <S.ModalContent className={isOpen ? "open" : ""}>
         <h2>Adicionar novo livro</h2>
-        <S.FormContainer onSubmit={handleSubmit}>
-          <S.InputGroup>
-            <S.InputWrapper>
-              <label htmlFor="title">Título do livro</label>
-              <input
-                id="title"
-                placeholder="Digite o título do livro"
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
-                required
-              />
-            </S.InputWrapper>
-
-            <S.InputWrapper>
-              <label htmlFor="author">Autor</label>
-              <select
-                id="author"
-                value={formData.authorId}
-                onChange={handleAuthorChange}
-                required
-              >
-                <option value="">Selecione um autor</option>
-                {authors.map((author) => (
-                  <option key={author.id} value={author.id}>
-                    {author.name}
-                  </option>
-                ))}
-              </select>
-            </S.InputWrapper>
-
-            <S.InputWrapper>
-              <label htmlFor="genre">Gênero</label>
-              <input
-                id="genre"
-                placeholder="Digite o gênero do livro"
-                value={formData.genre}
-                onChange={(e) =>
-                  setFormData({ ...formData, genre: e.target.value })
-                }
-                required
-              />
-            </S.InputWrapper>
-
-            <S.InputWrapper>
-              <label htmlFor="pages">Número de páginas</label>
-              <input
-                id="pages"
-                type="number"
-                placeholder="Digite o número de páginas"
-                value={formData.pages}
-                onChange={(e) =>
-                  setFormData({ ...formData, pages: e.target.value })
-                }
-                required
-              />
-            </S.InputWrapper>
-          </S.InputGroup>
-
-          <S.ButtonsContainer>
-            <Button color="orange" type="submit">
-              Salvar
+        {authors.length === 0 ? (
+          <S.NoAuthorsMessage>
+            <p>Você precisa cadastrar pelo menos um autor antes de adicionar um livro.</p>
+            <Button color="orange" onClick={onClose}>
+              Entendi
             </Button>
-            <Button type="button" onClick={onClose} color="gray">
-              Cancelar
-            </Button>
-          </S.ButtonsContainer>
-        </S.FormContainer>
+          </S.NoAuthorsMessage>
+        ) : (
+          <S.FormContainer onSubmit={handleSubmit}>
+            <S.InputGroup>
+              <S.InputWrapper>
+                <label htmlFor="title">Título do livro</label>
+                <input
+                  id="title"
+                  placeholder="Digite o título do livro"
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
+                  required
+                />
+              </S.InputWrapper>
+
+              <S.InputWrapper>
+                <label htmlFor="author">Autor</label>
+                <select
+                  id="author"
+                  value={formData.authorId}
+                  onChange={handleAuthorChange}
+                  required
+                >
+                  <option value="">Selecione um autor</option>
+                  {authors.map((author) => (
+                    <option key={author.id} value={author.id}>
+                      {author.name}
+                    </option>
+                  ))}
+                </select>
+              </S.InputWrapper>
+
+              <S.InputWrapper>
+                <label htmlFor="genre">Gênero</label>
+                <input
+                  id="genre"
+                  placeholder="Digite o gênero do livro"
+                  value={formData.genre}
+                  onChange={(e) =>
+                    setFormData({ ...formData, genre: e.target.value })
+                  }
+                  required
+                />
+              </S.InputWrapper>
+
+              <S.InputWrapper>
+                <label htmlFor="pages">Número de páginas</label>
+                <input
+                  id="pages"
+                  type="number"
+                  placeholder="Digite o número de páginas"
+                  value={formData.pages}
+                  onChange={(e) =>
+                    setFormData({ ...formData, pages: e.target.value })
+                  }
+                  required
+                />
+              </S.InputWrapper>
+            </S.InputGroup>
+
+            <S.ButtonsContainer>
+              <Button color="orange" type="submit">
+                Salvar
+              </Button>
+              <Button type="button" onClick={onClose} color="gray">
+                Cancelar
+              </Button>
+            </S.ButtonsContainer>
+          </S.FormContainer>
+        )}
       </S.ModalContent>
     </>
   );

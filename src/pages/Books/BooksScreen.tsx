@@ -1,9 +1,10 @@
-import { Button, Text } from "@radix-ui/themes";
+import { Button, Text, Tooltip } from "@radix-ui/themes";
 import { MagnifyingGlass, Plus, Trash } from "@phosphor-icons/react";
 import * as S from "./booksScreen.styles";
 import { useBooks } from "./hooks/useBooks";
 import { AddBookModal } from "../../components/AddBookModal";
 import { memo } from "react";
+import { useAuthors } from "../../hooks/useAuthors";
 
 const BooksScreen = memo(function BooksScreen() {
   const {
@@ -18,16 +19,25 @@ const BooksScreen = memo(function BooksScreen() {
     handleCloseModal,
   } = useBooks();
 
+  const { authors } = useAuthors();
+
   return (
     <S.Container>
       <S.Header>
         <Text size="6" weight="bold">
           Biblioteca
         </Text>
-        <Button size="3" color="orange" onClick={handleAddBook}>
-          <Plus size={20} />
-          Adicionar novo livro
-        </Button>
+        <Tooltip content={authors.length === 0 ? "Você precisa cadastrar pelo menos um autor antes de adicionar um livro" : ""}>
+          <Button 
+            size="3" 
+            color="orange" 
+            onClick={handleAddBook}
+            disabled={authors.length === 0}
+          >
+            <Plus size={20} />
+            Adicionar novo livro
+          </Button>
+        </Tooltip>
       </S.Header>
 
       <S.FilterSection>
@@ -62,10 +72,17 @@ const BooksScreen = memo(function BooksScreen() {
           <S.EmptyStateDescription>
             Você ainda não possui nenhum livro cadastrado no sistema.
           </S.EmptyStateDescription>
-          <Button size="3" color="orange" onClick={handleAddBook}>
-            <Plus size={20} />
-            Cadastrar Primeiro Livro
-          </Button>
+          <Tooltip content={authors.length === 0 ? "Você precisa cadastrar pelo menos um autor antes de adicionar um livro" : ""}>
+            <Button 
+              size="3" 
+              color="orange" 
+              onClick={handleAddBook}
+              disabled={authors.length === 0}
+            >
+              <Plus size={20} />
+              Cadastrar Primeiro Livro
+            </Button>
+          </Tooltip>
         </S.EmptyState>
       ) : (
         <S.TableContainer>

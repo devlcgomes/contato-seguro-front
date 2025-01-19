@@ -77,6 +77,22 @@ export const ModalContent = styled.div`
   }
 `;
 
+export const NoAuthorsMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 24px;
+  text-align: center;
+
+  p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+  }
+`;
+
 export const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
