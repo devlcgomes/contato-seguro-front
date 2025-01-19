@@ -6,6 +6,7 @@ import { BooksScreen } from "./pages/Books/BooksScreen";
 import { Layout } from "./components/Layout";
 import { AuthorsScreen } from "./pages/Authors/AuthorsScreen";
 import { LibraryProvider } from "./contexts/LibraryContext";
+import { ProfileScreen } from "./pages/Profile/ProfileScreen";
 
 export default function App() {
   return (
@@ -36,6 +37,14 @@ export default function App() {
               element={
                 <Layout>
                   <AuthorsScreen />
+                </Layout>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <Layout>
+                  <ProfileScreen />
                 </Layout>
               }
             />

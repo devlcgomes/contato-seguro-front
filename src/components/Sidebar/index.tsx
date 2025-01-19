@@ -34,11 +34,11 @@ export function Sidebar() {
           <Text>Autores</Text>
         </S.MenuItem>
         <S.MenuItem
-          active={location.pathname === "/settings"}
-          onClick={() => navigate("/settings")}
+          active={location.pathname === "/profile"}
+          onClick={() => navigate("/profile")}
         >
           <Gear size={20} />
-          <Text>Configurações</Text>
+          <Text>Meu Perfil</Text>
         </S.MenuItem>
         <S.MenuItem
           active={location.pathname === "/"}
