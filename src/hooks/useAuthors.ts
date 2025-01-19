@@ -1,24 +1,14 @@
-import { useState, useEffect, useCallback } from "react";
-import { useLocalStorage } from "./useLocalStorage";
-
-interface Author {
-  id: number;
-  name: string;
-  email: string;
-}
+import { useState, useCallback } from "react";
+import { useLibrary } from "../contexts/LibraryContext";
 
 export function useAuthors() {
-  const [authors, setAuthors] = useLocalStorage<Author[]>("authors", []);
+  const { authors, addAuthor: addAuthorToLibrary } = useLibrary();
   const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false);
 
-  const addAuthor = useCallback((newAuthor: { name: string; email: string }) => {
-    const author = {
-      ...newAuthor,
-      id: Date.now(), // Usando timestamp para garantir IDs únicos
-    };
-
-    setAuthors((prevAuthors) => [...prevAuthors, author]);
-  }, [setAuthors]);
+  const handleAddAuthor = useCallback((authorData: { name: string; email: string }) => {
+    addAuthorToLibrary(authorData);
+    setIsAuthorModalOpen(false);
+  }, [addAuthorToLibrary]);
 
   const handleOpenModal = useCallback(() => {
     setIsAuthorModalOpen(true);
@@ -33,6 +23,6 @@ export function useAuthors() {
     isAuthorModalOpen,
     handleOpenModal,
     handleCloseModal,
-    addAuthor,
+    addAuthor: handleAddAuthor,
   };
 }

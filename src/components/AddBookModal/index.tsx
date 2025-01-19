@@ -42,19 +42,31 @@ export function AddBookModal({
   }, [isOpen]);
 
   const handleAuthorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const authorId = Number(e.target.value);
     const selectedAuthor = authors.find(
-      (author) => author.id === Number(e.target.value)
+      (author) => author.id === authorId
     );
 
-    setFormData({
-      ...formData,
-      authorId: e.target.value,
-      authorName: selectedAuthor?.name || "",
-    });
+    if (selectedAuthor) {
+      setFormData({
+        ...formData,
+        authorId: String(selectedAuthor.id),
+        authorName: selectedAuthor.name,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        authorId: "",
+        authorName: "",
+      });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.authorId) {
+      return;
+    }
     onAddBook({
       ...formData,
       authorId: formData.authorId,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocalStorage } from "./useLocalStorage";
+import { useLibrary } from "../contexts/LibraryContext";
 
 interface Book {
   id: string;
@@ -9,6 +9,7 @@ interface Book {
   genre: string;
   pages: number;
   status: "read" | "unread";
+  addedDate: string;
 }
 
 interface AddBookData {
@@ -20,46 +21,29 @@ interface AddBookData {
 }
 
 export function useBooks() {
-  const [books, setBooks] = useLocalStorage<Book[]>("books", []);
+  const { books, addBook: addBookToLibrary, deleteBook, toggleBookStatus } = useLibrary();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const addBook = (bookData: AddBookData) => {
-    const newBook: Book = {
-      id: String(Math.random()),
-      title: bookData.title,
-      author: bookData.authorName,
-      authorId: bookData.authorId,
-      genre: bookData.genre,
-      pages: bookData.pages,
-      status: "unread",
-    };
-    setBooks([...books, newBook]);
+  const handleAddBook = (bookData: AddBookData) => {
+    addBookToLibrary(bookData);
     setIsModalOpen(false);
   };
 
-  const toggleBookStatus = (bookId: string) => {
-    setBooks(
-      books.map((book) =>
-        book.id === bookId
-          ? {
-              ...book,
-              status: book.status === "read" ? "unread" : "read",
-            }
-          : book
-      )
-    );
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
-  const deleteBook = (bookId: string) => {
-    setBooks(books.filter((book) => book.id !== bookId));
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
   };
 
   return {
     books,
     isModalOpen,
-    setIsModalOpen,
-    addBook,
-    toggleBookStatus,
+    handleOpenModal,
+    handleCloseModal,
+    addBook: handleAddBook,
     deleteBook,
+    toggleBookStatus,
   };
 }

@@ -1,11 +1,10 @@
-import { useLocalStorage } from "./useLocalStorage";
-import { Author, Book } from "../types";
+import { useMemo } from "react";
+import { useLibrary } from "../contexts/LibraryContext";
 
 export const useStatistics = () => {
-  const [books] = useLocalStorage<Book[]>("books", []);
-  const [authors] = useLocalStorage<Author[]>("authors", []);
+  const { books, authors } = useLibrary();
 
-  const getBooksByGenre = () => {
+  const booksByGenre = useMemo(() => {
     const genreCounts: { [key: string]: number } = {};
 
     books.forEach((book) => {
@@ -18,30 +17,31 @@ export const useStatistics = () => {
       name: genre,
       value: count,
     }));
-  };
+  }, [books]);
 
-  const getBooksByAuthor = () => {
-    const authorCounts: { [key: string]: number } = {};
+  const booksByAuthor = useMemo(() => {
+    const authorCounts: { [key: number]: number } = {};
 
     books.forEach((book) => {
       if (book.authorId) {
-        authorCounts[book.authorId] = (authorCounts[book.authorId] || 0) + 1;
+        const authorIdNum = typeof book.authorId === 'string' ? Number(book.authorId) : book.authorId;
+        authorCounts[authorIdNum] = (authorCounts[authorIdNum] || 0) + 1;
       }
     });
 
     return Object.entries(authorCounts).map(([authorId, count]) => {
-      const author = authors.find((a) => a.id === authorId);
+      const author = authors.find((a) => a.id === Number(authorId));
       return {
         name: author?.name || "Desconhecido",
         value: count,
       };
     });
-  };
+  }, [books, authors]);
 
-  const getTotalBooks = () => books.length;
-  const getTotalAuthors = () => authors.length;
+  const totalBooks = useMemo(() => books.length, [books]);
+  const totalAuthors = useMemo(() => authors.length, [authors]);
 
-  const getMonthlyBooks = () => {
+  const monthlyBooks = useMemo(() => {
     const monthlyData = books.reduce((acc: { [key: string]: number }, book) => {
       const month = new Date(book.addedDate).toLocaleString("default", {
         month: "short",
@@ -54,27 +54,29 @@ export const useStatistics = () => {
       month,
       value,
     }));
-  };
+  }, [books]);
 
-  const getRecentBooks = () => {
-    return books
-      .sort((a, b) => {
-        const dateA = new Date(a.addedDate).getTime();
-        const dateB = new Date(b.addedDate).getTime();
-        return dateB - dateA;
-      })
-      .slice(0, 5)
-      .map((book) => ({
+  const recentBooks = useMemo(() => {
+    const sortedBooks = [...books].sort((a, b) => {
+      const dateA = new Date(a.addedDate).getTime();
+      const dateB = new Date(b.addedDate).getTime();
+      return dateB - dateA;
+    });
+
+    return sortedBooks.slice(0, 5).map((book) => {
+      const authorIdNum = typeof book.authorId === 'string' ? Number(book.authorId) : book.authorId;
+      const author = authors.find((a) => a.id === authorIdNum);
+
+      return {
         ...book,
         name: book.title,
-        authorName:
-          authors.find((author) => author.id === book.authorId)?.name ||
-          "Desconhecido",
-      }));
-  };
+        authorName: author?.name || "Desconhecido",
+      };
+    });
+  }, [books, authors]);
 
-  const getRecentAuthors = () => {
-    return authors
+  const recentAuthors = useMemo(() => {
+    return [...authors]
       .sort((a, b) => {
         const dateA = new Date(a.addedDate).getTime();
         const dateB = new Date(b.addedDate).getTime();
@@ -83,17 +85,20 @@ export const useStatistics = () => {
       .slice(0, 5)
       .map((author) => ({
         ...author,
-        booksCount: books.filter((book) => book.authorId === author.id).length,
+        booksCount: books.filter((book) => {
+          const authorIdNum = typeof book.authorId === 'string' ? Number(book.authorId) : book.authorId;
+          return authorIdNum === author.id;
+        }).length,
       }));
-  };
+  }, [books, authors]);
 
   return {
-    booksByGenre: getBooksByGenre(),
-    booksByAuthor: getBooksByAuthor(),
-    totalBooks: getTotalBooks(),
-    totalAuthors: getTotalAuthors(),
-    monthlyBooks: getMonthlyBooks(),
-    recentBooks: getRecentBooks(),
-    recentAuthors: getRecentAuthors(),
+    booksByGenre,
+    booksByAuthor,
+    totalBooks,
+    totalAuthors,
+    monthlyBooks,
+    recentBooks,
+    recentAuthors,
   };
 };
