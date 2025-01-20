@@ -24,15 +24,19 @@ export function useBooks() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const filteredBooks = books.filter(
-    (book) =>
-      book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book.genre.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredBooks = books.filter((book) => {
+    if (!searchTerm) return true;
+    
+    const search = searchTerm.toLowerCase();
+    return (
+      (book.title || "").toLowerCase().includes(search) ||
+      (book.author || "").toLowerCase().includes(search) ||
+      (book.genre || "").toLowerCase().includes(search)
+    );
+  });
 
   const handleSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+    setSearchTerm(event.target.value || "");
   }, []);
 
   const handleAddBook = useCallback(() => {
