@@ -6,6 +6,7 @@ import { AddBookModal } from "../../components/AddBookModal";
 import { memo, useState } from "react";
 import { useAuthors } from "../../hooks/useAuthors";
 import { ViewBookModal } from "../../components/ViewBookModal";
+import { Book } from "../../types/book";
 
 const BooksScreen = memo(function BooksScreen() {
   const {

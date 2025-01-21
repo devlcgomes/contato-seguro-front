@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useLibrary } from "../contexts/LibraryContext";
-import { Book } from "../types/Book";
 
 interface AddBookData {
   title: string;

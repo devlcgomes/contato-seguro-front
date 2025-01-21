@@ -1,9 +1,7 @@
 import { styled } from "styled-components";
-import { Books, Users, Hash, Clock } from "@phosphor-icons/react";
+import { Books, Users, Hash, Quotes } from "@phosphor-icons/react";
 
 export const DashboardContainer = styled.div`
-  width: 100%;
-  min-height: 100vh;
   background-color: var(--color-background);
 `;
 
@@ -45,14 +43,15 @@ export const StatsGrid = styled.div`
 
 export const StatCard = styled.div`
   background: var(--color-background-light);
-  padding: 20px;
+  padding: 16px;
   border-radius: 10px;
   display: flex;
   gap: 16px;
-  align-items: flex-start;
+  align-items: center;
   transition: transform 0.2s ease-in-out;
   border: 1px solid var(--gray-4);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  height: fit-content;
 
   &:hover {
     transform: translateY(-2px);
@@ -190,7 +189,7 @@ export const Table = styled.table`
 export const BookIcon = styled(Books)``;
 export const AuthorIcon = styled(Users)``;
 export const GenreIcon = styled(Hash)``;
-export const RecentIcon = styled(Clock)``;
+export const RecentIcon = styled(Quotes)``;
 
 export const ChartsGrid = styled.div`
   display: grid;

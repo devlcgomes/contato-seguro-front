@@ -1,9 +1,7 @@
-import { MagnifyingGlass, Plus, Trash, Eye } from "@phosphor-icons/react";
+import { Plus, Trash, Eye } from "@phosphor-icons/react";
 import {
   Container,
   Header,
-  SearchContainer,
-  SearchInput,
   TableContainer,
   Table,
   Th,

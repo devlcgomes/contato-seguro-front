@@ -23,7 +23,8 @@ import { AddAuthorModal } from "../../components/AddAuthorModal";
 import { useBooks } from "../../hooks/useBooks";
 import { useAuthors } from "../../hooks/useAuthors";
 import { ViewBookModal } from "../../components/ViewBookModal";
-import { Book } from "../../types/Book";
+import { Book } from "../../types/book";
+import { QuotesCarousel } from "../../components/QuotesCarousel";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -147,13 +148,7 @@ const DashboardScreen: React.FC = () => {
             <S.IconWrapper variant="orange">
               <S.RecentIcon weight="fill" />
             </S.IconWrapper>
-            <S.StatContent>
-              <S.StatValue>8</S.StatValue>
-              <S.StatLabel>Livros recentes</S.StatLabel>
-              <S.GrowthIndicator positive>
-                adicionados na plataforma
-              </S.GrowthIndicator>
-            </S.StatContent>
+            <QuotesCarousel />
           </S.StatCard>
         </S.StatsGrid>
 

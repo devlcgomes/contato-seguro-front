@@ -1,6 +1,6 @@
 import { Dialog } from "@radix-ui/themes";
 import * as S from "./styles";
-import { Book } from "../../types/Book";
+import { Book } from "../../types/book";
 import { BookOpen } from "@phosphor-icons/react";
 
 interface ViewBookModalProps {
