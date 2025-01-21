@@ -4,11 +4,9 @@ A ideia não é que você use as melhores e maiores tecnologias do mercado, mas 
 você consiga mostrar o seu melhor fazendo o básico de maneira bem feita.
 Modelos
 Livro
+
 Um livro tem as seguintes propriedades:
 
--
--
--
 - id (obrigatório)
   name (obrigatório)
   author_id (obrigatório)
