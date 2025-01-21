@@ -1,10 +1,11 @@
 import { Button, Text, Tooltip } from "@radix-ui/themes";
-import { MagnifyingGlass, Plus, Trash } from "@phosphor-icons/react";
+import { MagnifyingGlass, Plus, Trash, Eye } from "@phosphor-icons/react";
 import * as S from "./booksScreen.styles";
 import { useBooks } from "./hooks/useBooks";
 import { AddBookModal } from "../../components/AddBookModal";
-import { memo } from "react";
+import { memo, useState } from "react";
 import { useAuthors } from "../../hooks/useAuthors";
+import { ViewBookModal } from "../../components/ViewBookModal";
 
 const BooksScreen = memo(function BooksScreen() {
   const {
@@ -21,16 +22,38 @@ const BooksScreen = memo(function BooksScreen() {
 
   const { authors } = useAuthors();
 
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+
+  const handleViewBook = (bookId: string) => {
+    const book = filteredBooks.find((b) => b.id === bookId);
+    if (book) {
+      setSelectedBook(book);
+      setIsViewModalOpen(true);
+    }
+  };
+
+  const handleCloseViewModal = () => {
+    setIsViewModalOpen(false);
+    setSelectedBook(null);
+  };
+
   return (
     <S.Container>
       <S.Header>
         <Text size="6" weight="bold">
           Biblioteca
         </Text>
-        <Tooltip content={authors.length === 0 ? "Você precisa cadastrar pelo menos um autor antes de adicionar um livro" : ""}>
-          <Button 
-            size="3" 
-            color="orange" 
+        <Tooltip
+          content={
+            authors.length === 0
+              ? "Você precisa cadastrar pelo menos um autor antes de adicionar um livro"
+              : ""
+          }
+        >
+          <Button
+            size="3"
+            color="orange"
             onClick={handleAddBook}
             disabled={authors.length === 0}
           >
@@ -72,10 +95,16 @@ const BooksScreen = memo(function BooksScreen() {
           <S.EmptyStateDescription>
             Você ainda não possui nenhum livro cadastrado no sistema.
           </S.EmptyStateDescription>
-          <Tooltip content={authors.length === 0 ? "Você precisa cadastrar pelo menos um autor antes de adicionar um livro" : ""}>
-            <Button 
-              size="3" 
-              color="orange" 
+          <Tooltip
+            content={
+              authors.length === 0
+                ? "Você precisa cadastrar pelo menos um autor antes de adicionar um livro"
+                : ""
+            }
+          >
+            <Button
+              size="3"
+              color="orange"
               onClick={handleAddBook}
               disabled={authors.length === 0}
             >
@@ -107,7 +136,16 @@ const BooksScreen = memo(function BooksScreen() {
                   <S.Td>{book.status === "read" ? "Lido" : "Não lido"}</S.Td>
                   <S.Td>
                     <S.ActionsContainer>
-                      <S.ActionButton onClick={() => handleDeleteBook(book.id)}>
+                      <S.ActionButton
+                        title="Visualizar"
+                        onClick={() => handleViewBook(book.id)}
+                      >
+                        <Eye size={20} />
+                      </S.ActionButton>
+                      <S.ActionButton
+                        title="Excluir"
+                        onClick={() => handleDeleteBook(book.id)}
+                      >
                         <Trash size={20} />
                       </S.ActionButton>
                     </S.ActionsContainer>
@@ -123,6 +161,12 @@ const BooksScreen = memo(function BooksScreen() {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onAddBook={addBook}
+      />
+
+      <ViewBookModal
+        isOpen={isViewModalOpen}
+        onClose={handleCloseViewModal}
+        book={selectedBook}
       />
     </S.Container>
   );

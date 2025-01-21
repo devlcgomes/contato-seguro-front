@@ -22,6 +22,8 @@ import { AddBookModal } from "../../components/AddBookModal";
 import { AddAuthorModal } from "../../components/AddAuthorModal";
 import { useBooks } from "../../hooks/useBooks";
 import { useAuthors } from "../../hooks/useAuthors";
+import { ViewBookModal } from "../../components/ViewBookModal";
+import { Book } from "../../types/Book";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -32,6 +34,8 @@ const DashboardScreen: React.FC = () => {
   const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false);
   const { addBook } = useBooks();
   const { addAuthor } = useAuthors();
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   const handleOpenBookModal = () => {
     setIsBookModalOpen(true);
@@ -49,6 +53,19 @@ const DashboardScreen: React.FC = () => {
     setIsAuthorModalOpen(false);
   };
 
+  const handleViewBook = (bookId: string) => {
+    const book = recentBooks.find((b) => b.id === bookId);
+    if (book) {
+      setSelectedBook(book);
+      setIsViewModalOpen(true);
+    }
+  };
+
+  const handleCloseViewModal = () => {
+    setIsViewModalOpen(false);
+    setSelectedBook(null);
+  };
+
   return (
     <S.DashboardContainer>
       <S.MainContent>
@@ -57,11 +74,21 @@ const DashboardScreen: React.FC = () => {
             Meus Livros
           </Text>
           <Flex gap="3">
-            <Button color="orange" size="3" variant="solid" onClick={handleOpenBookModal}>
+            <Button
+              color="orange"
+              size="3"
+              variant="solid"
+              onClick={handleOpenBookModal}
+            >
               <Plus />
               Adicionar novo livro
             </Button>
-            <Button color="orange" size="3" variant="solid" onClick={handleOpenAuthorModal}>
+            <Button
+              color="orange"
+              size="3"
+              variant="solid"
+              onClick={handleOpenAuthorModal}
+            >
               <Plus />
               Adicionar autor
             </Button>
@@ -75,10 +102,8 @@ const DashboardScreen: React.FC = () => {
             </S.IconWrapper>
             <S.StatContent>
               <S.StatValue>{totalBooks}</S.StatValue>
-              <S.StatLabel>Total Books</S.StatLabel>
-              <S.GrowthIndicator positive>
-                +12% from last month
-              </S.GrowthIndicator>
+              <S.StatLabel>Total de livros</S.StatLabel>
+              <S.GrowthIndicator positive>na biblioteca</S.GrowthIndicator>
             </S.StatContent>
           </S.StatCard>
 
@@ -88,9 +113,9 @@ const DashboardScreen: React.FC = () => {
             </S.IconWrapper>
             <S.StatContent>
               <S.StatValue>{totalAuthors}</S.StatValue>
-              <S.StatLabel>Authors</S.StatLabel>
+              <S.StatLabel>Autores</S.StatLabel>
               <S.GrowthIndicator positive>
-                +5% from last month
+                criados na plataforma
               </S.GrowthIndicator>
             </S.StatContent>
           </S.StatCard>
@@ -101,8 +126,10 @@ const DashboardScreen: React.FC = () => {
             </S.IconWrapper>
             <S.StatContent>
               <S.StatValue>{booksByGenre.length}</S.StatValue>
-              <S.StatLabel>Genres</S.StatLabel>
-              <S.StatLabel>Same as last month</S.StatLabel>
+              <S.StatLabel>Gêneros</S.StatLabel>
+              <S.GrowthIndicator positive>
+                criados na plataforma
+              </S.GrowthIndicator>
             </S.StatContent>
           </S.StatCard>
 
@@ -112,8 +139,10 @@ const DashboardScreen: React.FC = () => {
             </S.IconWrapper>
             <S.StatContent>
               <S.StatValue>8</S.StatValue>
-              <S.StatLabel>Recent Added</S.StatLabel>
-              <S.GrowthIndicator positive>+3 this week</S.GrowthIndicator>
+              <S.StatLabel>Livros recentes</S.StatLabel>
+              <S.GrowthIndicator positive>
+                adicionados na plataforma
+              </S.GrowthIndicator>
             </S.StatContent>
           </S.StatCard>
         </S.StatsGrid>
@@ -205,10 +234,13 @@ const DashboardScreen: React.FC = () => {
                   <td>{book.genre}</td>
                   <td>
                     <S.ActionButtons>
-                      <S.ActionButton title="View">
+                      <S.ActionButton
+                        title="Visualizar"
+                        onClick={() => handleViewBook(book.id)}
+                      >
                         <Eye size={20} />
                       </S.ActionButton>
-                      <S.ActionButton title="Delete" variant="danger">
+                      <S.ActionButton title="Excluir" variant="danger">
                         <Trash size={20} />
                       </S.ActionButton>
                     </S.ActionButtons>
@@ -230,6 +262,12 @@ const DashboardScreen: React.FC = () => {
         isOpen={isAuthorModalOpen}
         onClose={handleCloseAuthorModal}
         onAddAuthor={addAuthor}
+      />
+
+      <ViewBookModal
+        isOpen={isViewModalOpen}
+        onClose={handleCloseViewModal}
+        book={selectedBook}
       />
     </S.DashboardContainer>
   );
