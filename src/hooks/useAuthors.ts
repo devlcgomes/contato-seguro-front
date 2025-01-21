@@ -1,28 +1,41 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useLibrary } from "../contexts/LibraryContext";
 
 export function useAuthors() {
-  const { authors, addAuthor: addAuthorToLibrary } = useLibrary();
+  const {
+    authors,
+    addAuthor: addAuthorToLibrary,
+    deleteAuthor: deleteAuthorFromLibrary,
+  } = useLibrary();
   const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false);
 
-  const handleAddAuthor = useCallback((authorData: { name: string; email: string }) => {
+  const handleOpenModal = () => {
+    setIsAuthorModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsAuthorModalOpen(false);
+  };
+
+  const addAuthor = (authorData: { name: string; email: string }) => {
     addAuthorToLibrary(authorData);
     setIsAuthorModalOpen(false);
-  }, [addAuthorToLibrary]);
+  };
 
-  const handleOpenModal = useCallback(() => {
-    setIsAuthorModalOpen(true);
-  }, []);
-
-  const handleCloseModal = useCallback(() => {
-    setIsAuthorModalOpen(false);
-  }, []);
+  const deleteAuthor = (authorId: number) => {
+    try {
+      deleteAuthorFromLibrary(authorId);
+    } catch (error) {
+      console.error("Erro ao excluir autor:", error);
+    }
+  };
 
   return {
     authors,
     isAuthorModalOpen,
     handleOpenModal,
     handleCloseModal,
-    addAuthor: handleAddAuthor,
+    addAuthor,
+    deleteAuthor,
   };
 }

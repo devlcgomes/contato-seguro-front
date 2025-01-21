@@ -30,6 +30,7 @@ const AuthorsScreen = memo(function AuthorsScreen() {
     handleOpenModal,
     handleCloseModal,
     addAuthor,
+    deleteAuthor,
   } = useAuthors();
 
   const [selectedAuthor, setSelectedAuthor] = useState<Author | null>(null);
@@ -47,6 +48,19 @@ const AuthorsScreen = memo(function AuthorsScreen() {
 
   const getAuthorBooksCount = (authorId: number) => {
     return books.filter((book) => book.authorId === authorId).length;
+  };
+
+  const handleDeleteAuthor = (authorId: number) => {
+    const authorBooks = books.filter((book) => book.authorId === authorId);
+
+    if (authorBooks.length > 0) {
+      alert("Não é possível excluir um autor que possui livros cadastrados.");
+      return;
+    }
+
+    if (window.confirm("Tem certeza que deseja excluir este autor?")) {
+      deleteAuthor(authorId);
+    }
   };
 
   return (
@@ -94,7 +108,10 @@ const AuthorsScreen = memo(function AuthorsScreen() {
                       >
                         <Eye size={20} />
                       </ActionButton>
-                      <ActionButton>
+                      <ActionButton
+                        title="Excluir"
+                        onClick={() => handleDeleteAuthor(author.id)}
+                      >
                         <Trash size={20} />
                       </ActionButton>
                     </ActionsContainer>
