@@ -1,6 +1,17 @@
 # 📚 Sistema de Gerenciamento de Biblioteca
 
+## Link para visualização online do projeto
+O projeto está disponível em produção através da Vercel:
+[https://contato-seguro-front.vercel.app](https://contato-seguro-front.vercel.app)
+
+
 Um sistema CRUD completo para gerenciamento de livros e autores, desenvolvido com React e TypeScript.
+
+## Ressalvas antes de abrir o projeto : 
+- A tela de configuração de perfil é meramente ''ilustrativa'', colocada afins de enriquecimento do projeto.
+- O login e a senha para acesso, pode ser qualquer email e qualquer senha com mais de 6 caracteres.
+  
+
 
 ## ✨ Funcionalidades Implementadas
 
