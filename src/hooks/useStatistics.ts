@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useLibrary } from "../contexts/LibraryContext";
 
-export const useStatistics = () => {
+export function useStatistics() {
   const { books, authors } = useLibrary();
 
   const booksByGenre = useMemo(() => {
@@ -24,7 +24,10 @@ export const useStatistics = () => {
 
     books.forEach((book) => {
       if (book.authorId) {
-        const authorIdNum = typeof book.authorId === 'string' ? Number(book.authorId) : book.authorId;
+        const authorIdNum =
+          typeof book.authorId === "string"
+            ? Number(book.authorId)
+            : book.authorId;
         authorCounts[authorIdNum] = (authorCounts[authorIdNum] || 0) + 1;
       }
     });
@@ -57,22 +60,19 @@ export const useStatistics = () => {
   }, [books]);
 
   const recentBooks = useMemo(() => {
-    const sortedBooks = [...books].sort((a, b) => {
-      const dateA = new Date(a.addedDate).getTime();
-      const dateB = new Date(b.addedDate).getTime();
-      return dateB - dateA;
-    });
-
-    return sortedBooks.slice(0, 5).map((book) => {
-      const authorIdNum = typeof book.authorId === 'string' ? Number(book.authorId) : book.authorId;
-      const author = authors.find((a) => a.id === authorIdNum);
-
-      return {
-        ...book,
-        name: book.title,
-        authorName: author?.name || "Desconhecido",
-      };
-    });
+    return [...books]
+      .sort(
+        (a, b) =>
+          new Date(b.addedDate).getTime() - new Date(a.addedDate).getTime()
+      )
+      .slice(0, 5)
+      .map((book) => {
+        const author = authors.find((a) => a.id === book.authorId);
+        return {
+          ...book,
+          authorName: author?.name || book.author,
+        };
+      });
   }, [books, authors]);
 
   const recentAuthors = useMemo(() => {
@@ -86,7 +86,10 @@ export const useStatistics = () => {
       .map((author) => ({
         ...author,
         booksCount: books.filter((book) => {
-          const authorIdNum = typeof book.authorId === 'string' ? Number(book.authorId) : book.authorId;
+          const authorIdNum =
+            typeof book.authorId === "string"
+              ? Number(book.authorId)
+              : book.authorId;
           return authorIdNum === author.id;
         }).length,
       }));
@@ -101,4 +104,4 @@ export const useStatistics = () => {
     recentBooks,
     recentAuthors,
   };
-};
+}

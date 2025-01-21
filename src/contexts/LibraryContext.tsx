@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { createContext, useContext, useCallback, ReactNode } from "react";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface Book {
   id: string;
@@ -35,61 +35,94 @@ interface LibraryContextData {
   deleteBook: (id: string) => void;
   deleteAuthor: (id: number) => void;
   toggleBookStatus: (id: string) => void;
+  updateBooks: (books: Book[]) => void;
 }
 
-const LibraryContext = createContext<LibraryContextData>({} as LibraryContextData);
+export const LibraryContext = createContext<LibraryContextData>(
+  {} as LibraryContextData
+);
 
 export function LibraryProvider({ children }: { children: ReactNode }) {
   const [books, setBooks] = useLocalStorage<Book[]>("books", []);
   const [authors, setAuthors] = useLocalStorage<Author[]>("authors", []);
 
-  const addBook = useCallback((bookData: AddBookData) => {
-    const authorId = Number(bookData.authorId);
-    if (isNaN(authorId)) {
-      console.error('Invalid author ID:', bookData.authorId);
-      return;
-    }
+  const addBook = useCallback(
+    (bookData: AddBookData) => {
+      const authorId = Number(bookData.authorId);
+      if (isNaN(authorId)) {
+        console.error("Invalid author ID:", bookData.authorId);
+        return;
+      }
 
-    const newBook: Book = {
-      id: String(Math.random()),
-      title: bookData.title,
-      author: bookData.authorName,
-      authorId,
-      genre: bookData.genre,
-      pages: bookData.pages,
-      status: "unread",
-      addedDate: new Date().toISOString(),
-    };
-    
-    setBooks(prevBooks => [...prevBooks, newBook]);
-  }, [setBooks]);
+      const newBook: Book = {
+        id: String(new Date().getTime()),
+        title: bookData.title,
+        author: bookData.authorName,
+        authorId,
+        genre: bookData.genre,
+        pages: bookData.pages,
+        status: "unread" as const,
+        addedDate: new Date().toISOString(),
+      };
 
-  const addAuthor = useCallback((authorData: { name: string; email: string }) => {
-    const newAuthor: Author = {
-      ...authorData,
-      id: Date.now(),
-      addedDate: new Date().toISOString(),
-    };
-    setAuthors(prevAuthors => [...prevAuthors, newAuthor]);
-  }, [setAuthors]);
+      setBooks((prevBooks) => {
+        const updatedBooks = [...prevBooks, newBook];
+        return updatedBooks;
+      });
+    },
+    [setBooks]
+  );
 
-  const deleteBook = useCallback((id: string) => {
-    setBooks(prevBooks => prevBooks.filter(book => book.id !== id));
-  }, [setBooks]);
+  const addAuthor = useCallback(
+    (authorData: { name: string; email: string }) => {
+      const newAuthor: Author = {
+        ...authorData,
+        id: Date.now(),
+        addedDate: new Date().toISOString(),
+      };
+      setAuthors((prevAuthors) => [...prevAuthors, newAuthor]);
+    },
+    [setAuthors]
+  );
 
-  const deleteAuthor = useCallback((id: number) => {
-    setAuthors(prevAuthors => prevAuthors.filter(author => author.id !== id));
-  }, [setAuthors]);
+  const deleteBook = useCallback(
+    (id: string) => {
+      setBooks((prevBooks) => {
+        const updatedBooks = prevBooks.filter((book) => book.id !== id);
+        return updatedBooks;
+      });
+    },
+    [setBooks]
+  );
 
-  const toggleBookStatus = useCallback((id: string) => {
-    setBooks(prevBooks =>
-      prevBooks.map(book =>
-        book.id === id
-          ? { ...book, status: book.status === "read" ? "unread" : "read" }
-          : book
-      )
-    );
-  }, [setBooks]);
+  const deleteAuthor = useCallback(
+    (id: number) => {
+      setAuthors((prevAuthors) =>
+        prevAuthors.filter((author) => author.id !== id)
+      );
+    },
+    [setAuthors]
+  );
+
+  const toggleBookStatus = useCallback(
+    (id: string) => {
+      setBooks((prevBooks) =>
+        prevBooks.map((book) =>
+          book.id === id
+            ? { ...book, status: book.status === "read" ? "unread" : "read" }
+            : book
+        )
+      );
+    },
+    [setBooks]
+  );
+
+  const updateBooks = useCallback(
+    (newBooks: Book[]) => {
+      setBooks(newBooks);
+    },
+    [setBooks]
+  );
 
   return (
     <LibraryContext.Provider
@@ -101,6 +134,7 @@ export function LibraryProvider({ children }: { children: ReactNode }) {
         deleteBook,
         deleteAuthor,
         toggleBookStatus,
+        updateBooks,
       }}
     >
       {children}
@@ -112,8 +146,8 @@ export function useLibrary() {
   const context = useContext(LibraryContext);
 
   if (!context) {
-    throw new Error('useLibrary must be used within a LibraryProvider');
+    throw new Error("useLibrary must be used within a LibraryProvider");
   }
 
   return context;
-} 
+}

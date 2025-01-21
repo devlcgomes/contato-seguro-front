@@ -22,16 +22,25 @@ import { AddBookModal } from "../../components/AddBookModal";
 import { AddAuthorModal } from "../../components/AddAuthorModal";
 import { useBooks } from "../../hooks/useBooks";
 import { useAuthors } from "../../hooks/useAuthors";
+import { ViewBookModal } from "../../components/ViewBookModal";
+import { Book } from "../../types/book";
+import { QuotesCarousel } from "../../components/QuotesCarousel";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+
+interface RecentBook extends Book {
+  authorName: string;
+}
 
 const DashboardScreen: React.FC = () => {
   const { booksByGenre, totalBooks, totalAuthors, monthlyBooks, recentBooks } =
     useStatistics();
   const [isBookModalOpen, setIsBookModalOpen] = useState(false);
   const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false);
-  const { addBook } = useBooks();
+  const { addBook, deleteBook } = useBooks();
   const { addAuthor } = useAuthors();
+  const [selectedBook, setSelectedBook] = useState<RecentBook | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   const handleOpenBookModal = () => {
     setIsBookModalOpen(true);
@@ -49,6 +58,25 @@ const DashboardScreen: React.FC = () => {
     setIsAuthorModalOpen(false);
   };
 
+  const handleViewBook = (bookId: string) => {
+    const book = recentBooks.find((b) => b.id === bookId);
+    if (book) {
+      setSelectedBook(book);
+      setIsViewModalOpen(true);
+    }
+  };
+
+  const handleCloseViewModal = () => {
+    setIsViewModalOpen(false);
+    setSelectedBook(null);
+  };
+
+  const handleDeleteBook = (bookId: string) => {
+    if (window.confirm("Tem certeza que deseja excluir este livro?")) {
+      deleteBook(bookId);
+    }
+  };
+
   return (
     <S.DashboardContainer>
       <S.MainContent>
@@ -57,11 +85,21 @@ const DashboardScreen: React.FC = () => {
             Meus Livros
           </Text>
           <Flex gap="3">
-            <Button color="orange" size="3" variant="solid" onClick={handleOpenBookModal}>
+            <Button
+              color="orange"
+              size="3"
+              variant="solid"
+              onClick={handleOpenBookModal}
+            >
               <Plus />
               Adicionar novo livro
             </Button>
-            <Button color="orange" size="3" variant="solid" onClick={handleOpenAuthorModal}>
+            <Button
+              color="orange"
+              size="3"
+              variant="solid"
+              onClick={handleOpenAuthorModal}
+            >
               <Plus />
               Adicionar autor
             </Button>
@@ -75,10 +113,8 @@ const DashboardScreen: React.FC = () => {
             </S.IconWrapper>
             <S.StatContent>
               <S.StatValue>{totalBooks}</S.StatValue>
-              <S.StatLabel>Total Books</S.StatLabel>
-              <S.GrowthIndicator positive>
-                +12% from last month
-              </S.GrowthIndicator>
+              <S.StatLabel>Total de livros</S.StatLabel>
+              <S.GrowthIndicator positive>na biblioteca</S.GrowthIndicator>
             </S.StatContent>
           </S.StatCard>
 
@@ -88,9 +124,9 @@ const DashboardScreen: React.FC = () => {
             </S.IconWrapper>
             <S.StatContent>
               <S.StatValue>{totalAuthors}</S.StatValue>
-              <S.StatLabel>Authors</S.StatLabel>
+              <S.StatLabel>Autores</S.StatLabel>
               <S.GrowthIndicator positive>
-                +5% from last month
+                criados na plataforma
               </S.GrowthIndicator>
             </S.StatContent>
           </S.StatCard>
@@ -101,8 +137,10 @@ const DashboardScreen: React.FC = () => {
             </S.IconWrapper>
             <S.StatContent>
               <S.StatValue>{booksByGenre.length}</S.StatValue>
-              <S.StatLabel>Genres</S.StatLabel>
-              <S.StatLabel>Same as last month</S.StatLabel>
+              <S.StatLabel>Gêneros</S.StatLabel>
+              <S.GrowthIndicator positive>
+                criados na plataforma
+              </S.GrowthIndicator>
             </S.StatContent>
           </S.StatCard>
 
@@ -110,11 +148,7 @@ const DashboardScreen: React.FC = () => {
             <S.IconWrapper variant="orange">
               <S.RecentIcon weight="fill" />
             </S.IconWrapper>
-            <S.StatContent>
-              <S.StatValue>8</S.StatValue>
-              <S.StatLabel>Recent Added</S.StatLabel>
-              <S.GrowthIndicator positive>+3 this week</S.GrowthIndicator>
-            </S.StatContent>
+            <QuotesCarousel />
           </S.StatCard>
         </S.StatsGrid>
 
@@ -198,17 +232,24 @@ const DashboardScreen: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {recentBooks.map((book) => (
+              {(recentBooks as RecentBook[]).map((book) => (
                 <tr key={book.id}>
                   <td>{book.title}</td>
                   <td>{book.authorName}</td>
                   <td>{book.genre}</td>
                   <td>
                     <S.ActionButtons>
-                      <S.ActionButton title="View">
+                      <S.ActionButton
+                        title="Visualizar"
+                        onClick={() => handleViewBook(book.id)}
+                      >
                         <Eye size={20} />
                       </S.ActionButton>
-                      <S.ActionButton title="Delete" variant="danger">
+                      <S.ActionButton
+                        title="Excluir"
+                        variant="danger"
+                        onClick={() => handleDeleteBook(book.id)}
+                      >
                         <Trash size={20} />
                       </S.ActionButton>
                     </S.ActionButtons>
@@ -230,6 +271,12 @@ const DashboardScreen: React.FC = () => {
         isOpen={isAuthorModalOpen}
         onClose={handleCloseAuthorModal}
         onAddAuthor={addAuthor}
+      />
+
+      <ViewBookModal
+        isOpen={isViewModalOpen}
+        onClose={handleCloseViewModal}
+        book={selectedBook}
       />
     </S.DashboardContainer>
   );

@@ -1,6 +1,4 @@
 import styled, { keyframes } from "styled-components";
-import { colors } from "../../theme/colors";
-import { BaseModalContent } from "../../styles/modal.styles";
 
 const fadeIn = keyframes`
   from {
@@ -45,7 +43,8 @@ const slideOut = keyframes`
 export const ModalContent = styled.div`
   background-color: white;
   border-radius: 6px;
-  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+    hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -137,7 +136,8 @@ export const InputWrapper = styled.div`
     color: #1a1a1a;
   }
 
-  input, select {
+  input,
+  select {
     padding: 8px 12px;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
