@@ -27,14 +27,18 @@ import { Book } from "../../types/Book";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
+interface RecentBook extends Book {
+  authorName: string;
+}
+
 const DashboardScreen: React.FC = () => {
   const { booksByGenre, totalBooks, totalAuthors, monthlyBooks, recentBooks } =
     useStatistics();
   const [isBookModalOpen, setIsBookModalOpen] = useState(false);
   const [isAuthorModalOpen, setIsAuthorModalOpen] = useState(false);
-  const { addBook } = useBooks();
+  const { addBook, deleteBook } = useBooks();
   const { addAuthor } = useAuthors();
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [selectedBook, setSelectedBook] = useState<RecentBook | null>(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   const handleOpenBookModal = () => {
@@ -64,6 +68,12 @@ const DashboardScreen: React.FC = () => {
   const handleCloseViewModal = () => {
     setIsViewModalOpen(false);
     setSelectedBook(null);
+  };
+
+  const handleDeleteBook = (bookId: string) => {
+    if (window.confirm("Tem certeza que deseja excluir este livro?")) {
+      deleteBook(bookId);
+    }
   };
 
   return (
@@ -227,7 +237,7 @@ const DashboardScreen: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {recentBooks.map((book) => (
+              {(recentBooks as RecentBook[]).map((book) => (
                 <tr key={book.id}>
                   <td>{book.title}</td>
                   <td>{book.authorName}</td>
@@ -240,7 +250,11 @@ const DashboardScreen: React.FC = () => {
                       >
                         <Eye size={20} />
                       </S.ActionButton>
-                      <S.ActionButton title="Excluir" variant="danger">
+                      <S.ActionButton
+                        title="Excluir"
+                        variant="danger"
+                        onClick={() => handleDeleteBook(book.id)}
+                      >
                         <Trash size={20} />
                       </S.ActionButton>
                     </S.ActionButtons>

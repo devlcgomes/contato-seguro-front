@@ -38,6 +38,12 @@ const BooksScreen = memo(function BooksScreen() {
     setSelectedBook(null);
   };
 
+  const confirmDelete = (bookId: string) => {
+    if (window.confirm("Tem certeza que deseja excluir este livro?")) {
+      handleDeleteBook(bookId);
+    }
+  };
+
   return (
     <S.Container>
       <S.Header>
@@ -144,7 +150,7 @@ const BooksScreen = memo(function BooksScreen() {
                       </S.ActionButton>
                       <S.ActionButton
                         title="Excluir"
-                        onClick={() => handleDeleteBook(book.id)}
+                        onClick={() => confirmDelete(book.id)}
                       >
                         <Trash size={20} />
                       </S.ActionButton>
